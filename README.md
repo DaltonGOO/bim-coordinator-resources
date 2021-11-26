@@ -1,2 +1,3 @@
-# bim-coordinator-blog-resources
-This repo contains resource files for my blog post. 
+# bim-coordinator-resources
+This repo contains files from YouTube vids and blog post.
+
