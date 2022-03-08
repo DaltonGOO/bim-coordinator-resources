@@ -1,0 +1,151 @@
+{
+  "Uuid": "23c68290-af9d-4b21-9432-42c06a482012",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Dynamo - Get Connector Point Location",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Nodes.DSModelElementsSelection, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "InstanceId": [
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b521",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b527",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b533",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b535",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b53a",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b546",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b54f",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b550",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b55a",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b561",
+        "f7934698-0173-4cd7-867b-dbc4e5d14078-0014b562"
+      ],
+      "Id": "14699daa967f421480512c65cecb1eac",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1c3a550ea8e74e2ca5c829f58a9d8bad",
+          "Name": "Elements",
+          "Description": "The selected elements.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\nimport sys\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\anaconda3\\\\envs\\\\Dynamo_2022\\\\Lib\")\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\OneDrive\\\\My Stuff\\\\GitHub\\\\All-Sorts-of-Dynamo-Scripts\\\\Python Module\")\r\n\r\nimport clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nelements = UnwrapElement(IN[0])\r\n\r\n#Do some action in a Transaction\r\n\r\ndef get_connector_location(element):\r\n\tconnector_points = [element]\r\n\tif element.Category.Name == \"Ducts\":\r\n\t\tfor connector in element.ConnectorManager.Connectors:\r\n\t\t\tconnector_points.append(connector.Origin.ToPoint())\r\n\t\r\n\tif element.Category.Name == \"Duct Fittings\":\r\n\t\tfor connector in element.MEPModel.ConnectorManager.Connectors:\r\n\t\t\tconnector_points.append(connector.Origin.ToPoint())\r\n\t\r\n\treturn connector_points\r\n\r\nOUT = []\r\n\r\nfor element in elements:\r\n\tOUT.append(get_connector_location(element))",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "9f690c7ea2cf479a8fbf371d7f826e90",
+      "Inputs": [
+        {
+          "Id": "ffbb2c97d2804820bd3896b67b8d7329",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f19f43663a274616bd65ebc402ce0430",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "1c3a550ea8e74e2ca5c829f58a9d8bad",
+      "End": "ffbb2c97d2804820bd3896b67b8d7329",
+      "Id": "a4f54f9a149c48a3919ef4065750d0e7"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Select Model Elements",
+        "Id": "14699daa967f421480512c65cecb1eac",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -89.238747513537874,
+        "Y": 148.84482428763809
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "9f690c7ea2cf479a8fbf371d7f826e90",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 264.16991629255176,
+        "Y": 218.20643435332428
+      }
+    ],
+    "Annotations": [],
+    "X": -50.6651540522555,
+    "Y": -121.09616719865068,
+    "Zoom": 1.4761802392636134
+  }
+}
