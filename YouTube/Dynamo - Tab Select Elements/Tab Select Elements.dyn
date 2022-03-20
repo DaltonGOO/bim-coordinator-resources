@@ -12,7 +12,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import Selection\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n\r\ndef get_current_selection (uidoc):\r\n\tsel = uidoc.Selection\r\n\treturn sel.GetElementIds()\r\n\t\r\nselected_elements = []\r\nfor i in get_current_selection(uidoc):\r\n\tselected_elements.append(doc.GetElement(i))\r\n\r\nOUT = selected_elements",
+      "Code": "import clr\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n\"\"\"\r\nhttps://www.revitapidocs.com/2022/8eccaa93-cc99-fd37-15ad-24d201985d9b.htm\r\n\r\nhttps://www.revitapidocs.com/2022/d9848d7d-5917-2433-8454-f65f5ac03964.htm\r\n\"\"\"\r\n\r\ndef get_current_selection (uidoc):\r\n\tsel = uidoc.Selection\r\n\treturn sel.GetElementIds()\r\n\t\r\nselected_elements = []\r\nfor i in get_current_selection(uidoc):\r\n\tselected_elements.append(doc.GetElement(i))\r\n\r\nOUT = selected_elements",
       "Engine": "IronPython2",
       "VariableInputPorts": true,
       "Id": "8faa4e1470bf4e7e82d47921e1c0f348",
@@ -34,7 +34,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\nclr.AddReference('DynamoRevitDS')\r\nimport Dynamo\r\n#access to the current Dynamo instance and workspace\r\ndynamoRevit = Dynamo.Applications.DynamoRevit()\r\ncurrentWorkspace = dynamoRevit.RevitDynamoModel.CurrentWorkspace\r\n\r\ndef onEvaluationcompleted(obj, e):\r\n\tfor i in currentWorkspace.Nodes:\r\n\t\tif i.Name.StartsWith(\"*Force\"):\r\n\t\t\ti.MarkNodeAsModified(True)\r\n#the handlers for when a script has been run\r\ncurrentWorkspace.EvaluationCompleted += onEvaluationcompleted",
+      "Code": "\r\n\"\"\"\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nimport clr\r\n#clr.AddReference('ProtoGeometry')\r\n#from Autodesk.DesignScript.Geometry import *\r\n\r\nclr.AddReference('DynamoRevitDS')\r\nimport Dynamo\r\n#access to the current Dynamo instance and workspace\r\ndynamoRevit = Dynamo.Applications.DynamoRevit()\r\ncurrentWorkspace = dynamoRevit.RevitDynamoModel.CurrentWorkspace\r\n\r\ndef onEvaluationcompleted(obj, e):\r\n\tfor i in currentWorkspace.Nodes:\r\n\t\tif i.Name.StartsWith(\"*Force\"):\r\n\t\t\ti.MarkNodeAsModified(True)\r\n#the handlers for when a script has been run\r\ncurrentWorkspace.EvaluationCompleted += onEvaluationcompleted",
       "Engine": "IronPython2",
       "VariableInputPorts": true,
       "Id": "4b883fde0b27477b922bc1b5c1af96b8",
@@ -42,38 +42,6 @@
       "Outputs": [
         {
           "Id": "204154102adb4d92ad95d8fe40897c10",
-          "Name": "OUT",
-          "Description": "Result of the python script",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "Runs an embedded Python script."
-    },
-    {
-      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
-      "NodeType": "PythonScriptNode",
-      "Code": "\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\nimport sys\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\anaconda3\\\\envs\\\\Dynamo_2022\\\\Lib\")\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\OneDrive\\\\My Stuff\\\\GitHub\\\\All-Sorts-of-Dynamo-Scripts\\\\Python Module\")\r\n\r\nimport clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nelement = UnwrapElement(IN[0])\r\n\r\n#Do some action in a Transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\nOUT = element",
-      "Engine": "IronPython2",
-      "VariableInputPorts": true,
-      "Id": "679c700e6d6944b5a45f625ee2e89f58",
-      "Inputs": [
-        {
-          "Id": "8aed02bd615844ba88a7c81f18aa2e83",
-          "Name": "IN[0]",
-          "Description": "Input #0",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [
-        {
-          "Id": "d28fc45194bc42b79699507d51109763",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -136,8 +104,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 823.44376279984056,
-        "Y": -370.68950974770115
+        "X": -365.02350115618884,
+        "Y": -839.05099308012643
       },
       {
         "ShowGeometry": true,
@@ -146,18 +114,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 675.06958034858758,
-        "Y": -582.78174462880156
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Python Script",
-        "Id": "679c700e6d6944b5a45f625ee2e89f58",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 1401.5700186641343,
-        "Y": -457.71397535726726
+        "X": -406.55272022223232,
+        "Y": -447.39600335302248
       }
     ],
     "Annotations": [
@@ -165,8 +123,8 @@
         "Id": "036eb5dd73a143d1b9093ddcecd25fb2",
         "Title": "https://forum.dynamobim.com/t/how-to-force-nodes-to-rerun-without-changes-when-nodes-rerun/56366/3",
         "Nodes": [],
-        "Left": 556.14053211086207,
-        "Top": -463.30215784219826,
+        "Left": -401.80506426748934,
+        "Top": -349.8708610976264,
         "Width": 0.0,
         "Height": 0.0,
         "FontSize": 36.0,
@@ -176,8 +134,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": -119.10802288704531,
-    "Y": 814.49014328723047,
-    "Zoom": 1.148075373658977
+    "X": 580.38152256316016,
+    "Y": 1191.7268449001767,
+    "Zoom": 1.3664659088667033
   }
 }
