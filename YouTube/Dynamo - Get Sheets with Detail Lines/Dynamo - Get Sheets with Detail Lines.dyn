@@ -1,0 +1,296 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Dynamo - Get Detial Lines_",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "DSCore.List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Sheets with Detail Lines\";",
+      "Id": "51006d28c857434f893153b8672ec954",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "14984601b2714d8a98f88b3f5158f004",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.AddItemToFront@var[]..[],var[]..[]",
+      "Id": "2b41b24caace4782ae33ff22436b21bf",
+      "Inputs": [
+        {
+          "Id": "68469aa38a6949b69642645f9f96d1a4",
+          "Name": "item",
+          "Description": "Item to be added. Item could be an object or a list.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f3a11670bf8341ceaa3bc14364c9620a",
+          "Name": "list",
+          "Description": "List to add on to.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "dad07dd3a3a44afeb57773b2ead11c86",
+          "Name": "list",
+          "Description": "List with added items",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Adds an item to the beginning of a list.\n\nList.AddItemToFront (item: var[]..[], list: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Chop@var[]..[],int[]",
+      "Id": "a9e3133b3adf42a7983c8ad6fd52f679",
+      "Inputs": [
+        {
+          "Id": "201c61cfc52f41f6921064610f1c568e",
+          "Name": "list",
+          "Description": "List to chop into sublists\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dc0d7f03422c40a78b4f2264fa14bcf0",
+          "Name": "lengths",
+          "Description": "Lengths of consecutive sublists to be created from the input list\n\nint[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "caf2f97206524bb9b4dad2c7c6c4208a",
+          "Name": "lists",
+          "Description": "Sublists created from the list",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Chop a list into a set of consecutive sublists with the specified lengths. List division begins at the top of the list.\n\nList.Chop (list: var[]..[], lengths: int[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "1;",
+      "Id": "1103e62712844f9e87ec9402db3d19f5",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "389ee9aa1a9044cf910372fe750f771b",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nfrom System.Collections.Generic import *\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n\r\nlines = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Lines).ToElements()\r\n\r\nOUT = set()\r\nfor line in lines:\r\n\tif line.CurveElementType.ToString() == \"DetailCurve\":\r\n\t\tview = doc.GetElement(line.OwnerViewId).LookupParameter(\"Sheet Number\").AsString()\r\n\t\tif view != \"---\":\r\n\t\t\tOUT.add(view)\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "36be82015c1d4206a176aca804c0000b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "172795efe414484fbaf644c8a4f5620e",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "14984601b2714d8a98f88b3f5158f004",
+      "End": "68469aa38a6949b69642645f9f96d1a4",
+      "Id": "c3c33974d86c43f9966dc68a42a429d9"
+    },
+    {
+      "Start": "dad07dd3a3a44afeb57773b2ead11c86",
+      "End": "201c61cfc52f41f6921064610f1c568e",
+      "Id": "62956a4b4c854c6fbcf79e4e9287a266"
+    },
+    {
+      "Start": "389ee9aa1a9044cf910372fe750f771b",
+      "End": "dc0d7f03422c40a78b4f2264fa14bcf0",
+      "Id": "9c7d4e2d8c454374bcabe2cdc465e1ba"
+    },
+    {
+      "Start": "172795efe414484fbaf644c8a4f5620e",
+      "End": "f3a11670bf8341ceaa3bc14364c9620a",
+      "Id": "a75743ced5f5496facb988ce38cbaeb9"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": null,
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "51006d28c857434f893153b8672ec954",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 874.41629498705788,
+        "Y": 2404.70166302198
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.AddItemToFront",
+        "Id": "2b41b24caace4782ae33ff22436b21bf",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1233.5347763175589,
+        "Y": 2400.14938038417
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Chop",
+        "Id": "a9e3133b3adf42a7983c8ad6fd52f679",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1551.7841763047197,
+        "Y": 2411.5321425616407
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "1103e62712844f9e87ec9402db3d19f5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1405.7284224458174,
+        "Y": 2501.7165922196696
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "36be82015c1d4206a176aca804c0000b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1091.2055681498457,
+        "Y": 2562.5676486483353
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "980bab50086248428bf5465fe9bc1799",
+        "Title": "Sheets with Detail Lines",
+        "Nodes": [
+          "2b41b24caace4782ae33ff22436b21bf",
+          "51006d28c857434f893153b8672ec954"
+        ],
+        "Left": 864.41629498705788,
+        "Top": 2354.14938038417,
+        "Width": 542.118481330501,
+        "Height": 165.0,
+        "FontSize": 30.0,
+        "InitialTop": 2400.14938038417,
+        "InitialHeight": 172.251559731323,
+        "TextblockHeight": 36.0,
+        "Background": "#FFFFC999"
+      }
+    ],
+    "X": -149.29992888238689,
+    "Y": -1123.9417691394235,
+    "Zoom": 0.57320267637837441
+  }
+}
