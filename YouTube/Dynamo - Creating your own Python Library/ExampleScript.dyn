@@ -1,0 +1,148 @@
+{
+  "Uuid": "52daac6a-234b-4983-b2c9-b3bffc1a93e2",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "ExampleScript",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\n\r\nimport sys\r\nsys.path.append(r\"C:\\Users\\dalto\\OneDrive\\Desktop\\Company Python Lib\")\r\n\r\nfrom Levenshtein import distance as lev\r\nfrom fuzzywuzzy import fuzz\r\nfrom fuzzywuzzy import process\r\n\r\nroom_name_groups = [[\"Office\", \"Admin\"],\r\n[\"Toilet\", \"Men\", \"Women\", \"Restroom\", \"Bath\", \"Shower\", \"Bathroom\"],\r\n[\"Janitor\", \"Jan\", \"workroom\", \"Copy\", \"Pantry\", \"Supply\"],\r\n[\"Gymnasium\", \"Gym\"],\r\n[\"Lounge\", \"Breakroom\",\"Coffee\"],\r\n[\"Conference\", \"Meeting\", \"Breakout\", \"Collaboration\", \"Group\"],\r\n[\"Lobby\", \"Entry\", \"Foyer\", \"Front Desk\", \"Reception\", \"Check-in\"],\r\n[\"Classroom\", \"Multi-Purpose\", \"Grade\", \"Training\", \"Lecture\",\"Instruction\"],\r\n[\"Corridor\", \"Hallway\", \"Circulation\"],\r\n[\"Open Office\", \"Cube Farm\"],\r\n[\"Storage\", \"Closet\"],\r\n[\"Laundry\", \"Wash\", \"Dry\"],\r\n[\"Library\", \"Stacks\", \"Reading\", \"Book\"],\r\n[\"Stairs\", \"Stairway\"],\r\n[\"Workshop\", \"Maintenance\", \"Repair\", \"Shop\"],\r\n[\"Mech\", \"Elec\", \"IDF\", \"Data\", \"Server\", \"Telecom\", \"MDF\"],\r\n[\"Bedroom\", \"BR\", \"Bed\", \"Suite\", \"Dorm\"],\r\n[\"Cell\", \"Confinement\"],\r\n[\"Art\", \"Science\", \"Wet\", \"Lab\"],\r\n[\"Lunchroom\", \"Activity\", \"Cafeteria\", \"Banquet\"],\r\n[\"Exam\", \"Treatment\", \"Chiro\"],\r\n[\"Locker\", \"Mens Locker\", \"Womens Locker\", \"Locker Room\"],\r\n[\"Dining\", \"Bar\", \"Cafe\"],\r\n[\"Kitchen\", \"Food Prep\", \"Cook\"],\r\n[\"Elevator\", \"Elev Lobby\", \"Area of Refuge\"],\r\n[\"Auditorium\"],\r\n[\"Theater\", \"Movie\", \"Cinema\"],\r\n[\"Fitness\", \"Workout\", \"Dance\", \"Weight\"],\r\n[\"Courtroom\"],\r\n[\"Dressing\", \"Dressing Room\", \"Changing\"]]\r\n\r\n\r\nroom_names = IN[0]\r\n\r\ndef space_groups(room_name):\r\n    room_name_group_vals = []\r\n    for room_names in room_name_groups:\r\n        room_names_OUT = []\r\n        for room in room_names:\r\n            room_names_OUT.append(fuzz.ratio(room_name,room))\r\n        room_name_group_vals.append(room_names_OUT)\r\n    max_val = 0\r\n    for index, val_group in enumerate(room_name_group_vals):\r\n        if max(val_group) > max_val:\r\n            max_val = max(val_group)\r\n            room_name_group = room_name_groups[index]\r\n    return room_name_group\r\n\r\nOUT = []\r\nfor room_name in room_names:\r\n    OUT.append(space_groups(room_name))\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "b6fbe5c565414f6b81282bccf4fef284",
+      "Inputs": [
+        {
+          "Id": "dbbdb6e31a4e4299aec19e7e32a3d2d4",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "32df163c4e8a4900887a3d71f79d5023",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[\"Elec\", \"bath\", \"Library\", \"Bar\"];",
+      "Id": "9c53441e308741ee8eab612189521cc5",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f1ffc229f0fc41e79f0a46441e0908d6",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "f1ffc229f0fc41e79f0a46441e0908d6",
+      "End": "dbbdb6e31a4e4299aec19e7e32a3d2d4",
+      "Id": "46ecec4e4ab14e288db15ec10fec72fe",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.13",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "2.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.13.1.3887",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "b6fbe5c565414f6b81282bccf4fef284",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 401.15879177327497,
+        "Y": -88.268028634845962
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "9c53441e308741ee8eab612189521cc5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -199.05891034230888,
+        "Y": -183.82018189034508
+      }
+    ],
+    "Annotations": [],
+    "X": 561.44637393213452,
+    "Y": 202.52309586298929,
+    "Zoom": 1.0606077223602068
+  }
+}

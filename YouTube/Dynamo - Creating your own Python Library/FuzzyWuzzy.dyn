@@ -1,0 +1,104 @@
+{
+  "Uuid": "83f4b738-2569-42bf-9cc3-ad4f59784993",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "FuzzyWuzzy",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\"\"\"\r\n\r\n\r\nimport sys\r\nsys.path.append(r\"N:\\Revit\\Common\\Dynamo\\Support\\Packages\\HEI Python venv\")\r\n\r\n\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import Vector, Line\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nelement = UnwrapElement(IN[0])\r\n\r\nfrom Levenshtein import distance as lev\r\nfrom fuzzywuzzy import fuzz\r\nfrom fuzzywuzzy import process\r\n\r\nroom_name_groups = [[\"Office\", \"Admin\"],\r\n[\"Toilet\", \"Men\", \"Women\", \"Restroom\", \"Bath\", \"Shower\", \"Bathroom\"],\r\n[\"Janitor\", \"Jan\", \"workroom\", \"Copy\", \"Pantry\", \"Supply\"],\r\n[\"Gymnasium\", \"Gym\"],\r\n[\"Lounge\", \"Breakroom\",\"Coffee\"],\r\n[\"Conference\", \"Meeting\", \"Breakout\", \"Collaboration\", \"Group\"],\r\n[\"Lobby\", \"Entry\", \"Foyer\", \"Front Desk\", \"Reception\", \"Check-in\"],\r\n[\"Classroom\", \"Multi-Purpose\", \"Grade\", \"Training\", \"Lecture\",\"Instruction\"],\r\n[\"Corridor\", \"Hallway\", \"Circulation\"],\r\n[\"Open Office\", \"Cube Farm\"],\r\n[\"Storage\", \"Closet\"],\r\n[\"Laundry\", \"Wash\", \"Dry\"],\r\n[\"Library\", \"Stacks\", \"Reading\", \"Book\"],\r\n[\"Stairs\", \"Stairway\"],\r\n[\"Workshop\", \"Maintenance\", \"Repair\", \"Shop\"],\r\n[\"Mech\", \"Elec\", \"IDF\", \"Data\", \"Server\", \"Telecom\", \"MDF\"],\r\n[\"Bedroom\", \"BR\", \"Bed\", \"Suite\", \"Dorm\"],\r\n[\"Cell\", \"Confinement\"],\r\n[\"Art\", \"Science\", \"Wet\", \"Lab\"],\r\n[\"Lunchroom\", \"Activity\", \"Cafeteria\", \"Banquet\"],\r\n[\"Exam\", \"Treatment\", \"Chiro\"],\r\n[\"Locker\", \"Mens Locker\", \"Womens Locker\", \"Locker Room\"],\r\n[\"Dining\", \"Bar\", \"Cafe\"],\r\n[\"Kitchen\", \"Food Prep\", \"Cook\"],\r\n[\"Elevator\", \"Elev Lobby\", \"Area of Refuge\"],\r\n[\"Auditorium\"],\r\n[\"Theater\", \"Movie\", \"Cinema\"],\r\n[\"Fitness\", \"Workout\", \"Dance\", \"Weight\"],\r\n[\"Courtroom\"],\r\n[\"Dressing\", \"Dressing Room\", \"Changing\"]]\r\n\r\n\r\nroom_name_group_vals = []\r\nfor room_names in room_name_groups:\r\n    room_names_OUT = []\r\n    for room in room_names:\r\n        room_names_OUT.append(fuzz.ratio(\"Electrical\",room))\r\n    room_name_group_vals.append(room_names_OUT)\r\nmax_val = 0\r\nfor index, val_group in enumerate(room_name_group_vals):\r\n    if max(val_group) > max_val:\r\n        max_val = max(val_group)\r\n        OUT = room_name_groups[index]\r\n    ",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "229918aa792c4cf89b3405b6d9f2b8d4",
+      "Inputs": [
+        {
+          "Id": "55f063888f4b451984de64fae66438f9",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "49b844d315b5445388fe3cd74b95b87f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "229918aa792c4cf89b3405b6d9f2b8d4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 313.99999999999994,
+        "Y": 131.33333333333331
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}
