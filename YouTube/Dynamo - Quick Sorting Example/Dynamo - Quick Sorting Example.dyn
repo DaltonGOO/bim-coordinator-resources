@@ -1,0 +1,242 @@
+{
+  "Uuid": "57b335b9-95d8-434f-a4b2-119ba09fe57a",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Dynamo - Quick Sorting Example",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import re\r\n\r\ndef atoi(text):\r\n    return int(text) if text.isdigit() else text\r\n\r\ndef natural_keys(text):\r\n    '''\r\n    alist.sort(key=natural_keys) sorts in human order\r\n    http://nedbatchelder.com/blog/200712/human_sorting.html\r\n    (See Toothy's implementation in the comments)\r\n    '''\r\n    return [ atoi(c) for c in re.split(r'(\\d+)', text) ]\r\n\r\nlist = IN[0]\r\n\r\nlist.sort(key=natural_keys)\r\nOUT = list\r\n\r\n#https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "63055bfd65d64615a7969b5cb081d096",
+      "Inputs": [
+        {
+          "Id": "5c188968beef46a19d21d1c442961fb7",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f381617b41fa4d5a9b6005012951f6bc",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "OUT = [\"Loading 1\",  \"Loading 2\",  \"Loading 3\", \"Loading 4\", \"Loading 5\", \"Loading 6\", \"Loading 7\", \"Loading 8\", \"Loading 9\", \"Loading 10\", \"Loading 11\", \"Loading 12\", \"Loading 13\", \"Loading 14\", \"Loading 15\", \"Loading 1c\", \"Loading 2c\", \"Loading 3b\", \"Loading 3c\"]",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "fbfc1bcb63024dc8995df2829d916502",
+      "Inputs": [
+        {
+          "Id": "149003dda92840f89db8d1c6ad95b119",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5be660feff694749b3aeae33756d8b3d",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Shuffle@var[]..[]",
+      "Id": "f74fc9ce2c68488493f35de3cee2296f",
+      "Inputs": [
+        {
+          "Id": "6c6887f4fdd94ed89a765e27a780eeb0",
+          "Name": "list",
+          "Description": "List to shuffle.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ab3aea77eb684aeda92894f8216b8ab7",
+          "Name": "list",
+          "Description": "Randomized list.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Shuffles a list, randomizing the order of its items.\n\nList.Shuffle (list: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Sort@var[]",
+      "Id": "a2f7d057c800482ab1625853a9ae1626",
+      "Inputs": [
+        {
+          "Id": "baf06aca5b3f409fa92da06e47cb4f01",
+          "Name": "list",
+          "Description": "List of items to be sorted\n\nvar[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fffa053e5f854d329cec0d37b05591e9",
+          "Name": "int[]",
+          "Description": "The indices of the items in the sorted list",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Sorts a list by the items and return their indices.\n\nList.Sort (list: var[]): var[]..[]"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "5be660feff694749b3aeae33756d8b3d",
+      "End": "6c6887f4fdd94ed89a765e27a780eeb0",
+      "Id": "12bf63e102f64ab087ab555315b0ac48"
+    },
+    {
+      "Start": "ab3aea77eb684aeda92894f8216b8ab7",
+      "End": "baf06aca5b3f409fa92da06e47cb4f01",
+      "Id": "88abc733b47648f3a87a3b940a9d0c2f"
+    },
+    {
+      "Start": "fffa053e5f854d329cec0d37b05591e9",
+      "End": "5c188968beef46a19d21d1c442961fb7",
+      "Id": "f3ed9e12b0304dadaa2bf2eab70a3b4d"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "63055bfd65d64615a7969b5cb081d096",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1511.0,
+        "Y": 188.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "fbfc1bcb63024dc8995df2829d916502",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 809.0,
+        "Y": 189.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Shuffle",
+        "Id": "f74fc9ce2c68488493f35de3cee2296f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 996.46063258736376,
+        "Y": 211.15551118222558
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Sort",
+        "Id": "a2f7d057c800482ab1625853a9ae1626",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1263.0,
+        "Y": 196.0
+      }
+    ],
+    "Annotations": [],
+    "X": -1180.1371937595904,
+    "Y": -126.59478207867323,
+    "Zoom": 1.476180239263613
+  }
+}
