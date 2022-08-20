@@ -1,0 +1,1735 @@
+{
+  "Uuid": "b5e3388c-5b7c-4ed1-b77d-7537d881fd42",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "Filters By View Template",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "archilabUI.ViewTypesUi, archilabUI2022",
+      "SelectedIndex": 24,
+      "SelectedString": "View Template",
+      "NodeType": "ExtensionNode",
+      "Id": "93e8e469efca42ae898595c8941bf570",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "de9ee40e328f46bbbe70849d67d219a1",
+          "Name": "viewType",
+          "Description": "The selected viewType",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Retrieve all available View Types."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Revit.Views.Views.GetByType@string",
+      "Id": "d54315a788b3404189c314e9caf1f3e4",
+      "Inputs": [
+        {
+          "Id": "f3eccd176d5045e8b06c5d3c55a405b2",
+          "Name": "viewType",
+          "Description": "View type to retrieve all views for. If View Template selected, 3D View Templates will be excluded from returned View Templates (currently a Dynamo limitation).\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "4cd13899ca9447ce8a26197cc57ee613",
+          "Name": "view",
+          "Description": "Views that match view type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get all views by type.\n\nViews.GetByType (viewType: string): Element[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "List.SortByFunction@var[]..[],Function",
+      "Id": "eff73b4cfd0b40b9856e9c07b75f2fd5",
+      "Inputs": [
+        {
+          "Id": "cc7339cfbef849c881b3ece615b8a216",
+          "Name": "list",
+          "Description": "list of values\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": true,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c7d2ce46ec5a43e4a7ca38b4d786fced",
+          "Name": "sortFunction",
+          "Description": "function used to sort list\n\nFunction",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b35f9b0a72b84f89a5d225a1045133cb",
+          "Name": "sortedList",
+          "Description": "type: var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Use a function to determine how list items should be sorted.\n\nList.SortByFunction (list: var[]..[], sortFunction: Function): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Revit.Views.Views.IsFilterApplied@Revit.Elements.Views.View,Revit.Filter.ParameterFilterElement",
+      "Id": "84fc94100eb74485985dbccda31d3930",
+      "Inputs": [
+        {
+          "Id": "90756c7cfa9b44d88422bf001d2b3841",
+          "Name": "view",
+          "Description": "View",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1cbdfbf7c3794423a2234b3fd2bbe107",
+          "Name": "parameterFilter",
+          "Description": "ParameterFilterElement",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "aa4466c8bbe446a791f09cd886639208",
+          "Name": "bool",
+          "Description": "bool",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Views.IsFilterApplied (view: View, parameterFilter: ParameterFilterElement): bool"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.FilterByBoolMask@var[]..[],var[]..[]",
+      "Id": "66e6ff8c02964abba5f83279b2f8d9c3",
+      "Inputs": [
+        {
+          "Id": "106f06e2edbf456c8be1ae2b5a168863",
+          "Name": "list",
+          "Description": "List to filter.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "67654dbee79a498da28ae3f4fe49cd70",
+          "Name": "mask",
+          "Description": "List of booleans representing a mask.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "24343c35d338446e8eb87101545c6284",
+          "Name": "in",
+          "Description": "Items whose mask index is true.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "081d6b7ac77f446c94e93a7b2c035742",
+          "Name": "out",
+          "Description": "Items whose mask index is false.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Filters a sequence by looking up corresponding indices in a separate list of booleans.\n\nList.FilterByBoolMask (list: var[]..[], mask: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Views.View.Filters",
+      "Id": "14f15a17bfe34d87aee3a797fcdc3adf",
+      "Inputs": [
+        {
+          "Id": "2e5565ddc5b64d4498c7a8e7c59e5299",
+          "Name": "view",
+          "Description": "Revit.Elements.Views.View",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "209400495b5a475ead95ebdc7252dfee",
+          "Name": "filter",
+          "Description": "View Filters",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get View Filters\n\nView.Filters: ParameterFilterElement[]"
+    },
+    {
+      "ConcreteType": "archilabUI.ListSelector.ListSelector, archilabUI2022",
+      "ItemsCollection": [
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration Piping )",
+          "Index": 0,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration BAS )",
+          "Index": 1,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration Leak Detection )",
+          "Index": 2,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Refrigeration Piping )",
+          "Index": 3,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Refrigeration Piping Demo )",
+          "Index": 4,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration Piping Demo )",
+          "Index": 5,
+          "IsSelected": true
+        },
+        {
+          "Name": "ScheduleView(Name = NEW SCHEDULE )",
+          "Index": 6,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Fire Protection )",
+          "Index": 7,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration EMS )",
+          "Index": 8,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Electrical Refrigeration )",
+          "Index": 9,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Electrical Lighting Demo )",
+          "Index": 10,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Electrical Power Demo )",
+          "Index": 11,
+          "IsSelected": true
+        },
+        {
+          "Name": "SectionView(Name = Design View Electrical Power Section )",
+          "Index": 12,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Design View Mechanical Ceiling Plan )",
+          "Index": 13,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Design View Electrical Lighting )",
+          "Index": 14,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Electrical Power )",
+          "Index": 15,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Mechanical Gas Piping )",
+          "Index": 16,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Mechanical HVAC Plan )",
+          "Index": 17,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Plumbing Plan )",
+          "Index": 18,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Plumbing )",
+          "Index": 19,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Mechanical Gas Piping Plan )",
+          "Index": 20,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Plumbing Waste & Vent Plan )",
+          "Index": 21,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Plumbing Water Plan )",
+          "Index": 22,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Mechanical HVAC )",
+          "Index": 23,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Plumbing Water )",
+          "Index": 24,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Plumbing Waste & Vent )",
+          "Index": 25,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Electrical Lighting w/ Emergency )",
+          "Index": 26,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Electrical Power )",
+          "Index": 27,
+          "IsSelected": true
+        },
+        {
+          "Name": "SectionView(Name = Plot View Mechanical Section )",
+          "Index": 28,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View MP Roof Plan )",
+          "Index": 29,
+          "IsSelected": true
+        },
+        {
+          "Name": "SectionView(Name = Plot View Plumbing Section )",
+          "Index": 30,
+          "IsSelected": true
+        },
+        {
+          "Name": "SectionView(Name = Design View Electrical Lighting Section )",
+          "Index": 31,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View MP Roof )",
+          "Index": 32,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Mechanical Equipment )",
+          "Index": 33,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Mechanical HVAC + Gas Piping )",
+          "Index": 34,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Building Automation )",
+          "Index": 35,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Electrical Refrigeration Demo )",
+          "Index": 36,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Fire Protection Demo )",
+          "Index": 37,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Key Plan )",
+          "Index": 38,
+          "IsSelected": true
+        },
+        {
+          "Name": "ScheduleView(Name = ETR RTU SCHEDULE )",
+          "Index": 39,
+          "IsSelected": false
+        },
+        {
+          "Name": "ScheduleView(Name = ETR/NEW RTU SCHEDULE )",
+          "Index": 40,
+          "IsSelected": false
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Electrical Lighting w/o Emergency )",
+          "Index": 41,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Fire Protection Overall Plan )",
+          "Index": 42,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Electrical Lighting )",
+          "Index": 43,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Electrical Power Enlarged )",
+          "Index": 44,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Electrical Telecom )",
+          "Index": 45,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = A1 - FLOOR PLAN )",
+          "Index": 46,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = A2 - EXTERIOR ELEVATION )",
+          "Index": 47,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = A4 - ROOF PLAN )",
+          "Index": 48,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = D1 - DEMOLITION PLAN )",
+          "Index": 49,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = REF - Working Plan - Existing )",
+          "Index": 50,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = REF - Working Plan - New )",
+          "Index": 51,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = SP1 - SITE PLAN )",
+          "Index": 52,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = REF - Underslab Coordination Plan )",
+          "Index": 53,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = REF - Working Elevation )",
+          "Index": 54,
+          "IsSelected": false
+        },
+        {
+          "Name": "ScheduleView(Name = Schedule - Type 1 )",
+          "Index": 55,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = SHELL )",
+          "Index": 56,
+          "IsSelected": false
+        },
+        {
+          "Name": "ScheduleView(Name = A1.1 - FLOOR FINISH RESPONSIBILITY MATRIX (ICC )",
+          "Index": 57,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Elevation + Section )",
+          "Index": 58,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Site )",
+          "Index": 59,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - RCP )",
+          "Index": 60,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Fixture Plan )",
+          "Index": 61,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Floor Plan )",
+          "Index": 62,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Finish Plan )",
+          "Index": 63,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Roof Plan )",
+          "Index": 64,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Interior Elevation )",
+          "Index": 65,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = VG - Extr Elev - Consistent Color )",
+          "Index": 66,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Area Plan )",
+          "Index": 67,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grid Coordination )",
+          "Index": 68,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Underslab Plan )",
+          "Index": 69,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Fixture Plan )",
+          "Index": 70,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Floor Plan )",
+          "Index": 71,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = VG - Grocery Section )",
+          "Index": 72,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery RCP )",
+          "Index": 73,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Walk-In Plan )",
+          "Index": 74,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Elevation )",
+          "Index": 75,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Finish Plan )",
+          "Index": 76,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Grocery Edge Protection )",
+          "Index": 77,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Furnishing Elevation )",
+          "Index": 78,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Furnishing Plan )",
+          "Index": 79,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Floor Plan w Racks )",
+          "Index": 80,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Clean Elevations )",
+          "Index": 81,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - Exterior Elevation )",
+          "Index": 82,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Clean without annotations )",
+          "Index": 83,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = VG - UDCP )",
+          "Index": 84,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = SE - Interior Elevation )",
+          "Index": 85,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Architectural Plan )",
+          "Index": 86,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Structural Framing Plan )",
+          "Index": 87,
+          "IsSelected": false
+        },
+        {
+          "Name": "CeilingPlanView(Name = Architectural Reflected Ceiling Plan )",
+          "Index": 88,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Site Plan1 )",
+          "Index": 89,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Architectural Section )",
+          "Index": 90,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Site Section )",
+          "Index": 91,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Exterior Elevation - Branding )",
+          "Index": 92,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Structural Foundation Plan )",
+          "Index": 93,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Area Plan )",
+          "Index": 94,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Architectural Roof Plan )",
+          "Index": 95,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Electrical Plan )",
+          "Index": 96,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Architectural Presentation Elevation )",
+          "Index": 97,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Structural Framing Elevation )",
+          "Index": 98,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Structural Section )",
+          "Index": 99,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Enlarged Floor Plan )",
+          "Index": 100,
+          "IsSelected": false
+        },
+        {
+          "Name": "SectionView(Name = Architectural Elevation )",
+          "Index": 101,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Export Anno )",
+          "Index": 102,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Export Demo )",
+          "Index": 103,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Export New )",
+          "Index": 104,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = SHELL PLAN )",
+          "Index": 105,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Temporary )",
+          "Index": 106,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Common-Working )",
+          "Index": 107,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Common-Issue )",
+          "Index": 108,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = REMODEL INDEX COLOR MAP )",
+          "Index": 109,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = SOW PHASE )",
+          "Index": 110,
+          "IsSelected": false
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Mechanical ETR RTU )",
+          "Index": 111,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Design View Mech Struct Plan )",
+          "Index": 112,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Mechanical Overall )",
+          "Index": 113,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Plumbing Overall )",
+          "Index": 114,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Fire Sprinkler RCP )",
+          "Index": 115,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Fire Sprinkler Demolition RCP )",
+          "Index": 116,
+          "IsSelected": true
+        },
+        {
+          "Name": "CeilingPlanView(Name = Plot View Electrical Lighting w/ Emergency w/ demo )",
+          "Index": 117,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration Struct Coord )",
+          "Index": 118,
+          "IsSelected": true
+        },
+        {
+          "Name": "FloorPlanView(Name = Plot View Refrigeration Coordination )",
+          "Index": 119,
+          "IsSelected": true
+        }
+      ],
+      "NodeType": "ExtensionNode",
+      "Id": "2f79b12beded4f4b88f31df12878159c",
+      "Inputs": [
+        {
+          "Id": "c9764ffc9de94e8981fa0c3d7e663445",
+          "Name": "List",
+          "Description": "Input List.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8c789b1f60364df6a62592f8e9e745d7",
+          "Name": "List",
+          "Description": "Selected Items.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Use this node to select multiple items from a list."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.Id",
+      "Id": "4f8fed9c3e36437c9e01371b07e0b1bc",
+      "Inputs": [
+        {
+          "Id": "1e5ab3983b554f9eb687bb742f937245",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "60191045919c49efa4e878742b63e171",
+          "Name": "int",
+          "Description": "int",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the Element Id for this element\n\nElement.Id: int"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.Name",
+      "Id": "b92f7cc49b5a41d6bac38063415b04b0",
+      "Inputs": [
+        {
+          "Id": "7b9265293fb14685a5432c638f96fb41",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "95f3701ed4e34bd6bcde0ac1cf1dde6d",
+          "Name": "string",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the Name of the Element\n\nElement.Name: string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.Name",
+      "Id": "847144420c8a4818b254a1d5a2a4749e",
+      "Inputs": [
+        {
+          "Id": "5c597d7ad9cf496c912feec909bdb714",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "000f7d02536e495dadb817bf4324bfce",
+          "Name": "string",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the Name of the Element\n\nElement.Name: string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.ByKeysValues@string[],var[]..[]",
+      "Id": "5954dfcc025d4ce08f490e2bbb23de7c",
+      "Inputs": [
+        {
+          "Id": "c290d02100a44ecea3908fd2ce346b0b",
+          "Name": "keys",
+          "Description": "Keys of dictionary\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5fe263000d794572ad005c60b797618c",
+          "Name": "values",
+          "Description": "Values of dictionary\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c60c4be79d644b6a87ccda1e6fd3ea2f",
+          "Name": "dictionary",
+          "Description": "Dictionary from keys and values",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Produces a Dictionary with the supplied keys and values. The number of entries is the shorter of keys or values.\n\nDictionary.ByKeysValues (keys: string[], values: var[]..[]): Dictionary"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.UniqueItems@var[]..[]",
+      "Id": "47f20fb3d6594450946a4ae88b9ae45c",
+      "Inputs": [
+        {
+          "Id": "7bf4946d8e204c77b728cf8b8394254e",
+          "Name": "list",
+          "Description": "List to filter duplicates out of.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "711cf2f9953942e79b136ec66040d3d4",
+          "Name": "list",
+          "Description": "Filtered list.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Creates a new list containing all unique items in the given list.\n\nList.UniqueItems (list: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Flatten@var[]..[],int",
+      "Id": "4b522e9b1d454e35a4e38abaaf188185",
+      "Inputs": [
+        {
+          "Id": "a28133a25d944879aae346cc22ee33f7",
+          "Name": "list",
+          "Description": "List to flatten.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dec19484b0e8438a8dab465c1a140ead",
+          "Name": "amount",
+          "Description": "Layers of list nesting to remove (-1 will remove all list nestings)\n\nint\nDefault value : -1",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d97637c048a94d048685bed8a78d5148",
+          "Name": "list",
+          "Description": "Flattened list by amount",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Flattens a nested list of lists by a certain amount.\n\nList.Flatten (list: var[]..[], amount: int = -1): var[]..[]"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "template_filters = IN[0]\r\nfilter_set = IN[1]\r\n\r\n\r\nOUT = []\r\nfor filter in filter_set:\r\n\tcount = 0\r\n\tfor filter_list in template_filters:\r\n\t\tif filter in filter_list:\r\n\t\t\tcount += 1\r\n\t\t\t\r\n\tOUT.append(count)",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "0b75aedf301a40f788ffd539fb755287",
+      "Inputs": [
+        {
+          "Id": "4b668ae31f0d4a73a0c4921eceef90ff",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cf82fd3313ea4d189f8527a3ce5b7e43",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "877bdc83c4d14d409ee95365ab23d10d",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementTypes, DSRevitNodesUI",
+      "SelectedIndex": 134,
+      "SelectedString": "FilterElement",
+      "NodeType": "ExtensionNode",
+      "Id": "a4aa8867dd3d443fa1094d73397ac374",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7b1f7da8e06b4dfe859cf80fd03ef79a",
+          "Name": "Types",
+          "Description": "The selected Types",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All element subtypes."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementsOfType, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "Id": "a55d9d95d3be45b0ab3f79eb6dca3e40",
+      "Inputs": [
+        {
+          "Id": "394837799dff4482ac150738ea5702e3",
+          "Name": "element type",
+          "Description": "An element type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "424be4b5fac54456b2b9a3c754ae6222",
+          "Name": "elements",
+          "Description": "All elements in the active document of a given type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All elements in the active document of a given type."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.Name",
+      "Id": "b6f9ab1b7426434fb36d3a2caae9ae94",
+      "Inputs": [
+        {
+          "Id": "61077cbe058241c7856f072ae2af625f",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9b1f181c4c2f4cb3bd894e0f10000489",
+          "Name": "string",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the Name of the Element\n\nElement.Name: string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "==@var[]..[],var[]..[]",
+      "Id": "7ed6a8f8796c452c967d12f081d22f63",
+      "Inputs": [
+        {
+          "Id": "80d804c43572479eae0c95b4c6faffdf",
+          "Name": "x",
+          "Description": "Basic type object to compare (e.g. bool, int, double, string, etc.)\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3d5ffbc5525c4778aa74bb3b7225e671",
+          "Name": "y",
+          "Description": "Basic type object to compare (e.g. bool, int, double, string, etc.)\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c531e1b2512e4196a1bbdcfa02d4e976",
+          "Name": "bool",
+          "Description": "Result of equality check",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Compares if x and y are equal\n\n== (x: var[]..[], y: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.FilterByBoolMask@var[]..[],var[]..[]",
+      "Id": "93208e6ceb564e0ca486139991e9c96b",
+      "Inputs": [
+        {
+          "Id": "2e33c1d9e2dd4d35932bbe718dcef068",
+          "Name": "list",
+          "Description": "List to filter.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "31d142cc34ca4b5e8384983ac48879d8",
+          "Name": "mask",
+          "Description": "List of booleans representing a mask.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a266a389567f4cb7a4f52eb2b916f481",
+          "Name": "in",
+          "Description": "Items whose mask index is true.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "84cee1a56cb4402abd3235e86ad5193e",
+          "Name": "out",
+          "Description": "Items whose mask index is false.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Filters a sequence by looking up corresponding indices in a separate list of booleans.\n\nList.FilterByBoolMask (list: var[]..[], mask: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "0;",
+      "Id": "e0a1cf38af7144278fc2404535fca963",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8593d3422d114db490670985c80baea5",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "de9ee40e328f46bbbe70849d67d219a1",
+      "End": "f3eccd176d5045e8b06c5d3c55a405b2",
+      "Id": "2f64e7e4f4c14d6ea8417ab3ffda2e12"
+    },
+    {
+      "Start": "4cd13899ca9447ce8a26197cc57ee613",
+      "End": "c9764ffc9de94e8981fa0c3d7e663445",
+      "Id": "a9afc566f7554074af30d9e6b3724c5b"
+    },
+    {
+      "Start": "b35f9b0a72b84f89a5d225a1045133cb",
+      "End": "1cbdfbf7c3794423a2234b3fd2bbe107",
+      "Id": "e70bbe8a8e694144829c60e1c7a872cc"
+    },
+    {
+      "Start": "b35f9b0a72b84f89a5d225a1045133cb",
+      "End": "106f06e2edbf456c8be1ae2b5a168863",
+      "Id": "667986a3b078422b8902e57b7fcb91f7"
+    },
+    {
+      "Start": "aa4466c8bbe446a791f09cd886639208",
+      "End": "67654dbee79a498da28ae3f4fe49cd70",
+      "Id": "f727a7f5b8224266a254e56532e49cc1"
+    },
+    {
+      "Start": "24343c35d338446e8eb87101545c6284",
+      "End": "7b9265293fb14685a5432c638f96fb41",
+      "Id": "f00c252f3e714f4dbdb0fd62fb0a51a3"
+    },
+    {
+      "Start": "209400495b5a475ead95ebdc7252dfee",
+      "End": "cc7339cfbef849c881b3ece615b8a216",
+      "Id": "4278046dab084df6930c282a5def1694"
+    },
+    {
+      "Start": "8c789b1f60364df6a62592f8e9e745d7",
+      "End": "2e5565ddc5b64d4498c7a8e7c59e5299",
+      "Id": "243631968c6b455482bda9f7ce52fc7e"
+    },
+    {
+      "Start": "8c789b1f60364df6a62592f8e9e745d7",
+      "End": "90756c7cfa9b44d88422bf001d2b3841",
+      "Id": "997c28caaa82422993ba44cd5a76ae94"
+    },
+    {
+      "Start": "8c789b1f60364df6a62592f8e9e745d7",
+      "End": "5c597d7ad9cf496c912feec909bdb714",
+      "Id": "c1bbe68718e2469fa5aa0473f77dcf17"
+    },
+    {
+      "Start": "60191045919c49efa4e878742b63e171",
+      "End": "c7d2ce46ec5a43e4a7ca38b4d786fced",
+      "Id": "8837aa51a17e4c31b081814799dd96de"
+    },
+    {
+      "Start": "95f3701ed4e34bd6bcde0ac1cf1dde6d",
+      "End": "5fe263000d794572ad005c60b797618c",
+      "Id": "25165b7de706401ea5376afb5bb0953a"
+    },
+    {
+      "Start": "95f3701ed4e34bd6bcde0ac1cf1dde6d",
+      "End": "a28133a25d944879aae346cc22ee33f7",
+      "Id": "6b28256f71ca433092f651eba84470fe"
+    },
+    {
+      "Start": "95f3701ed4e34bd6bcde0ac1cf1dde6d",
+      "End": "4b668ae31f0d4a73a0c4921eceef90ff",
+      "Id": "da4fbcf20d654279bab1bb7d045db92e"
+    },
+    {
+      "Start": "000f7d02536e495dadb817bf4324bfce",
+      "End": "c290d02100a44ecea3908fd2ce346b0b",
+      "Id": "fe40d8b681a54157bdf1cb8834a4d272"
+    },
+    {
+      "Start": "d97637c048a94d048685bed8a78d5148",
+      "End": "7bf4946d8e204c77b728cf8b8394254e",
+      "Id": "29c7135b59cb4d6094c9a9c88fb358a2"
+    },
+    {
+      "Start": "877bdc83c4d14d409ee95365ab23d10d",
+      "End": "80d804c43572479eae0c95b4c6faffdf",
+      "Id": "f213ee456ad24eda985f732c1ce511bd"
+    },
+    {
+      "Start": "7b1f7da8e06b4dfe859cf80fd03ef79a",
+      "End": "394837799dff4482ac150738ea5702e3",
+      "Id": "c772003beda243fb95010c6f757f4dda"
+    },
+    {
+      "Start": "424be4b5fac54456b2b9a3c754ae6222",
+      "End": "61077cbe058241c7856f072ae2af625f",
+      "Id": "ea17d539d28242f39f16c44fad61209d"
+    },
+    {
+      "Start": "9b1f181c4c2f4cb3bd894e0f10000489",
+      "End": "cf82fd3313ea4d189f8527a3ce5b7e43",
+      "Id": "d07cb5155b3f4c30af2197585b9691e4"
+    },
+    {
+      "Start": "9b1f181c4c2f4cb3bd894e0f10000489",
+      "End": "2e33c1d9e2dd4d35932bbe718dcef068",
+      "Id": "6b128b52092b499f97fd5b3486689cc8"
+    },
+    {
+      "Start": "c531e1b2512e4196a1bbdcfa02d4e976",
+      "End": "31d142cc34ca4b5e8384983ac48879d8",
+      "Id": "a26877cee6c34c5999fcd50c975e58a3"
+    },
+    {
+      "Start": "8593d3422d114db490670985c80baea5",
+      "End": "3d5ffbc5525c4778aa74bb3b7225e671",
+      "Id": "7c09e9411a4347b188f35a21a812d42d"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "archi-lab.net",
+      "Version": "2022.210.2120",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "93e8e469efca42ae898595c8941bf570",
+        "d54315a788b3404189c314e9caf1f3e4",
+        "84fc94100eb74485985dbccda31d3930",
+        "2f79b12beded4f4b88f31df12878159c"
+      ]
+    }
+  ],
+  "Thumbnail": null,
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "View Type",
+        "Id": "93e8e469efca42ae898595c8941bf570",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1449.4103103419864,
+        "Y": 276.93919896444163
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Views.GetByType",
+        "Id": "d54315a788b3404189c314e9caf1f3e4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1200.5269625970923,
+        "Y": 276.8705599585777
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.SortByFunction",
+        "Id": "eff73b4cfd0b40b9856e9c07b75f2fd5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 332.2657462855359,
+        "Y": 432.21368431830911
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Views.IsFilterApplied",
+        "Id": "84fc94100eb74485985dbccda31d3930",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 729.42465018421751,
+        "Y": 707.98428977017932
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.FilterByBoolMask",
+        "Id": "66e6ff8c02964abba5f83279b2f8d9c3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1119.1819811323628,
+        "Y": 531.62217562081423
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "View.Filters",
+        "Id": "14f15a17bfe34d87aee3a797fcdc3adf",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 118.45362158141586,
+        "Y": 394.59687600764164
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List Selector",
+        "Id": "2f79b12beded4f4b88f31df12878159c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -938.38602683925455,
+        "Y": 275.70118127209327
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element.Id",
+        "Id": "4f8fed9c3e36437c9e01371b07e0b1bc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 118.55342592767136,
+        "Y": 499.77345237321458
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Filters By View Template",
+        "Id": "b92f7cc49b5a41d6bac38063415b04b0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1441.2871041119874,
+        "Y": 352.76060262105545
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element.Name",
+        "Id": "847144420c8a4818b254a1d5a2a4749e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1442.3471567529721,
+        "Y": 253.40886410338351
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.ByKeysValues",
+        "Id": "5954dfcc025d4ce08f490e2bbb23de7c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1822.1263057520978,
+        "Y": 347.50235984290146
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.UniqueItems",
+        "Id": "47f20fb3d6594450946a4ae88b9ae45c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2313.6315157281115,
+        "Y": 175.48223574124904
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Flatten",
+        "Id": "4b522e9b1d454e35a4e38abaaf188185",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2011.0553953952347,
+        "Y": 159.15620791258334
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "0b75aedf301a40f788ffd539fb755287",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3442.4759750773242,
+        "Y": 339.95850820320345
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element Types",
+        "Id": "a4aa8867dd3d443fa1094d73397ac374",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2723.6256113543759,
+        "Y": 544.49652247305858
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "All Elements of Type",
+        "Id": "a55d9d95d3be45b0ab3f79eb6dca3e40",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2936.4796223096278,
+        "Y": 509.14543816193645
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element.Name",
+        "Id": "b6f9ab1b7426434fb36d3a2caae9ae94",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3189.8798854792849,
+        "Y": 463.95970239759129
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "==",
+        "Id": "7ed6a8f8796c452c967d12f081d22f63",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3769.8203030484269,
+        "Y": 324.43034246927988
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.FilterByBoolMask",
+        "Id": "93208e6ceb564e0ca486139991e9c96b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3987.2983245988148,
+        "Y": 468.40028167879274
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "e0a1cf38af7144278fc2404535fca963",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3652.7801446708536,
+        "Y": 378.37064455243967
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "b0b2b748f2dc4979aed3e92f06451d21",
+        "Title": "",
+        "Nodes": [
+          "eff73b4cfd0b40b9856e9c07b75f2fd5",
+          "84fc94100eb74485985dbccda31d3930",
+          "66e6ff8c02964abba5f83279b2f8d9c3",
+          "14f15a17bfe34d87aee3a797fcdc3adf",
+          "4f8fed9c3e36437c9e01371b07e0b1bc"
+        ],
+        "Left": 108.45362158141586,
+        "Top": 341.59687600764164,
+        "Width": 1191.7283595509471,
+        "Height": 485.38741376253768,
+        "FontSize": 36.0,
+        "InitialTop": 394.59687600764164,
+        "InitialHeight": 344.1195482069179,
+        "TextblockHeight": 43.0,
+        "Background": "#FF48B9FF"
+      },
+      {
+        "Id": "b7a695fe082048acaf4e717421f8b03d",
+        "Title": "",
+        "Nodes": [
+          "93e8e469efca42ae898595c8941bf570",
+          "d54315a788b3404189c314e9caf1f3e4",
+          "2f79b12beded4f4b88f31df12878159c"
+        ],
+        "Left": -1459.4103103419864,
+        "Top": 222.70118127209327,
+        "Width": 797.02428350273181,
+        "Height": 419.99999999999994,
+        "FontSize": 36.0,
+        "InitialTop": 275.70118127209327,
+        "InitialHeight": 146.23801769234836,
+        "TextblockHeight": 43.0,
+        "Background": "#FFA4E1FF"
+      },
+      {
+        "Id": "616d266428404142893e182529a5b775",
+        "Title": "",
+        "Nodes": [
+          "b92f7cc49b5a41d6bac38063415b04b0",
+          "847144420c8a4818b254a1d5a2a4749e",
+          "5954dfcc025d4ce08f490e2bbb23de7c",
+          "47f20fb3d6594450946a4ae88b9ae45c",
+          "4b522e9b1d454e35a4e38abaaf188185"
+        ],
+        "Left": 1431.2871041119874,
+        "Top": 106.15620791258334,
+        "Width": 1045.344411616124,
+        "Height": 360.34615193031811,
+        "FontSize": 36.0,
+        "InitialTop": 159.15620791258334,
+        "InitialHeight": 244.35173851767195,
+        "TextblockHeight": 43.0,
+        "Background": "#FFA4E1FF"
+      },
+      {
+        "Id": "47cf634577194edf842006b3f0bd37d2",
+        "Title": "",
+        "Nodes": [
+          "0b75aedf301a40f788ffd539fb755287",
+          "a4aa8867dd3d443fa1094d73397ac374",
+          "a55d9d95d3be45b0ab3f79eb6dca3e40",
+          "b6f9ab1b7426434fb36d3a2caae9ae94",
+          "7ed6a8f8796c452c967d12f081d22f63",
+          "93208e6ceb564e0ca486139991e9c96b",
+          "e0a1cf38af7144278fc2404535fca963"
+        ],
+        "Left": 2713.6256113543759,
+        "Top": 271.43034246927988,
+        "Width": 1454.6727132444385,
+        "Height": 366.0661800037787,
+        "FontSize": 36.0,
+        "InitialTop": 324.43034246927988,
+        "InitialHeight": 385.5250078948485,
+        "TextblockHeight": 43.0,
+        "Background": "#FF48B9FF"
+      }
+    ],
+    "X": 813.70841969601645,
+    "Y": 305.81223789766756,
+    "Zoom": 0.1290104999079274
+  }
+}
