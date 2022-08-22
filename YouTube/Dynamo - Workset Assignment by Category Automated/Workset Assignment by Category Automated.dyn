@@ -1,0 +1,596 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Workset Assignment by Category Automated",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.SetParameterByName@string,var",
+      "Id": "3637998bddf74b478d52690b1d17578e",
+      "Inputs": [
+        {
+          "Id": "4b5cc429d765401aa695a54b8d1a7753",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "153488ba76a74e25a7984aedff571e6b",
+          "Name": "parameterName",
+          "Description": "The name of the parameter to set.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b189dcab649e43dea50bd1243e59dc42",
+          "Name": "value",
+          "Description": "The value.\n\nvar",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ad8b20d4019b4db8bdbf436ece454007",
+          "Name": "Element",
+          "Description": "Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Set one of the element's parameters.\n\nElement.SetParameterByName (parameterName: string, value: var): Element"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Workset\";",
+      "Id": "623707386eb542238df4a65c04d25c29",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6b94a87f4226430bbcb8faf85f3bbfc3",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nimport clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import Category, FilteredElementCollector \r\n\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\nOUT = set()\r\ncollector = FilteredElementCollector(doc).WhereElementIsNotElementType()\r\n\r\nfor ele in list(collector):\r\n\tif ele.Category:\r\n\t\tif ele.Category.CategoryType.ToString() == 'Model':\r\n\t\t\tif ele.Category.CanAddSubcategory:\r\n\t\t\t\tOUT.add(ele.Category.Name)",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "50bc45e230bd4bd6999528e9f088628e",
+      "Inputs": [
+        {
+          "Id": "287c7718428746a49c930787674cb20b",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "028583345e174381b5502f4f9f7141e7",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Category.ByName@string",
+      "Id": "28f532e636944cfbb68418cc990aed6c",
+      "Inputs": [
+        {
+          "Id": "62921c65d27747f5aceba9fddcf59a3d",
+          "Name": "name",
+          "Description": "The built in category name.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "be66fd0709ac40198f9feba50247ff9e",
+          "Name": "Category",
+          "Description": "Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets a Revit category by the built-in category name.\n\nCategory.ByName (name: string): Category"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nimport clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import FilteredWorksetCollector\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\nOUT = [[], []]\r\ncollector = FilteredWorksetCollector(doc)\r\nfor workset in collector:\r\n\tif str(workset.Kind) == 'UserWorkset':\r\n\t\tOUT[0].append(workset.Id.IntegerValue)\r\n\t\tOUT[1].append(workset.Name)\r\n\t",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "c8786729a1604eefb9d98a781540b84b",
+      "Inputs": [
+        {
+          "Id": "f756fe4e1bd84c06a283174050fb35f1",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "aa058d280ea94640bb1d685ac48d30b8",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\n\r\nimport sys\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\anaconda3\\\\envs\\\\Dynamo_2022\\\\Lib\\\\site-packages\")\r\n\r\n\r\n\r\nmodel_categories = IN[0]\r\n\r\nuser_workset_ids = IN[1][0]\r\nuser_workset_names = IN[1][1]\r\n\r\n\r\n#from Levenshtein import distance as lev\r\nfrom Levenshtein import distance as lev\r\nfrom fuzzywuzzy import fuzz\r\nfrom fuzzywuzzy import process\r\n\r\nOUT = []\r\nfuzz_values = []\r\nfor cat in model_categories:\r\n    fuzz_ratios = []\r\n    for workset in user_workset_names:\r\n        fuzz_ratios.append(fuzz.ratio(cat, workset))\r\n    fuzz_values.append(fuzz_ratios)\r\nfor ind, i in enumerate(fuzz_values):\r\n    if max(i) > 80:\r\n        OUT.append([user_workset_names[i.index(max(i))], user_workset_ids[i.index(max(i))], model_categories[ind]])\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "b35e510110324525973e1284ff457b78",
+      "Inputs": [
+        {
+          "Id": "92bc8728c69c49048daeeece4290849e",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6c0a61a310574fef9ed38379c56993b0",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6406f3687ff74ce3b735a116c1afe3e8",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.GetItemAtIndex@var[]..[],int",
+      "Id": "9e294fa783ef49a3a20911d5d472bcbd",
+      "Inputs": [
+        {
+          "Id": "6c7a2e4f124f40d29d500fbb634c436a",
+          "Name": "list",
+          "Description": "List to fetch an item from.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": true,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d8a73a398ace4676b04cb42d73ad6899",
+          "Name": "index",
+          "Description": "Index of the item to be fetched.\n\nint",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a02c148ffdb14488a8ce801c019830e7",
+          "Name": "item",
+          "Description": "Item in the list at the given index.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns an item from the given list that's located at the specified index.\n\nList.GetItemAtIndex (list: var[]..[], index: int): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "2;",
+      "Id": "be9da317e1c74a0db520e9afd00b811e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "fc0884ed574d4dbf9a1b332b6cdb6af7",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementsOfCategory, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "Id": "a11090d5834d4f4781f4ae5d6179ee62",
+      "Inputs": [
+        {
+          "Id": "f3f9978327de44208ec396e1442620d3",
+          "Name": "Category",
+          "Description": "The Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f9dc8830277d45fd98873e6ca04d9482",
+          "Name": "Elements",
+          "Description": "An element type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Get all elements of the specified category from the model."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.GetItemAtIndex@var[]..[],int",
+      "Id": "8ca28aa4876646b793fd4409cefba5bc",
+      "Inputs": [
+        {
+          "Id": "0254c017a9214417b7e7a7200b80e58e",
+          "Name": "list",
+          "Description": "List to fetch an item from.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": true,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6ab6a2c5fc35407893b04da3ee15fc3d",
+          "Name": "index",
+          "Description": "Index of the item to be fetched.\n\nint",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3a196ea438524c76bff039e1a549cbfc",
+          "Name": "item",
+          "Description": "Item in the list at the given index.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns an item from the given list that's located at the specified index.\n\nList.GetItemAtIndex (list: var[]..[], index: int): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "1;",
+      "Id": "ad2d83c02fa74474822708923a3f5d32",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "127a9daae7b740b28945da20d999c455",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "6b94a87f4226430bbcb8faf85f3bbfc3",
+      "End": "153488ba76a74e25a7984aedff571e6b",
+      "Id": "9268d5c5103946c78cb93b988505aec3"
+    },
+    {
+      "Start": "028583345e174381b5502f4f9f7141e7",
+      "End": "92bc8728c69c49048daeeece4290849e",
+      "Id": "c5144dbbb9594827818f7f96ea8a8f4e"
+    },
+    {
+      "Start": "be66fd0709ac40198f9feba50247ff9e",
+      "End": "f3f9978327de44208ec396e1442620d3",
+      "Id": "0a7fb5587776467a870adbd9d06ce3dc"
+    },
+    {
+      "Start": "aa058d280ea94640bb1d685ac48d30b8",
+      "End": "6c0a61a310574fef9ed38379c56993b0",
+      "Id": "a8fff3c175aa43f3a22c4c0692889e66"
+    },
+    {
+      "Start": "6406f3687ff74ce3b735a116c1afe3e8",
+      "End": "6c7a2e4f124f40d29d500fbb634c436a",
+      "Id": "86b21550616446f48a70dfd5cb51c7c6"
+    },
+    {
+      "Start": "6406f3687ff74ce3b735a116c1afe3e8",
+      "End": "0254c017a9214417b7e7a7200b80e58e",
+      "Id": "b7961c6b92ad4a69aec539e47e910087"
+    },
+    {
+      "Start": "a02c148ffdb14488a8ce801c019830e7",
+      "End": "62921c65d27747f5aceba9fddcf59a3d",
+      "Id": "303189264d8f45758ee1c10f2a2c57a9"
+    },
+    {
+      "Start": "fc0884ed574d4dbf9a1b332b6cdb6af7",
+      "End": "d8a73a398ace4676b04cb42d73ad6899",
+      "Id": "802d667e4fdd4ac989ad459d5723bee4"
+    },
+    {
+      "Start": "f9dc8830277d45fd98873e6ca04d9482",
+      "End": "4b5cc429d765401aa695a54b8d1a7753",
+      "Id": "d6bc96e5a14d4bc2898f2a55a214e51d"
+    },
+    {
+      "Start": "3a196ea438524c76bff039e1a549cbfc",
+      "End": "b189dcab649e43dea50bd1243e59dc42",
+      "Id": "058f6349fdd940739d8373e00b153049"
+    },
+    {
+      "Start": "127a9daae7b740b28945da20d999c455",
+      "End": "6ab6a2c5fc35407893b04da3ee15fc3d",
+      "Id": "8bc744624d46486bad7e24732d21b165"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Element.SetParameterByName",
+        "Id": "3637998bddf74b478d52690b1d17578e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 5179.7385688346167,
+        "Y": 781.26550561204044
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "623707386eb542238df4a65c04d25c29",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 4868.38182864788,
+        "Y": 808.55652100600059
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Model Categories",
+        "Id": "50bc45e230bd4bd6999528e9f088628e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2681.5266835807947,
+        "Y": 481.1589442801515
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Category.ByName",
+        "Id": "28f532e636944cfbb68418cc990aed6c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 4187.2600610775917,
+        "Y": 475.89600629290459
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "UserWorksets",
+        "Id": "c8786729a1604eefb9d98a781540b84b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2700.3940351070451,
+        "Y": 939.52303117090833
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "b35e510110324525973e1284ff457b78",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3441.26203199704,
+        "Y": 767.18803210555814
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.GetItemAtIndex",
+        "Id": "9e294fa783ef49a3a20911d5d472bcbd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3919.2312017514578,
+        "Y": 433.84595224013771
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "be9da317e1c74a0db520e9afd00b811e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3774.27020874375,
+        "Y": 513.89220815270346
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "All Elements of Category",
+        "Id": "a11090d5834d4f4781f4ae5d6179ee62",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 4486.1120601880311,
+        "Y": 474.31541675506048
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.GetItemAtIndex",
+        "Id": "8ca28aa4876646b793fd4409cefba5bc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3936.9485685580489,
+        "Y": 928.69572433015264
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "ad2d83c02fa74474822708923a3f5d32",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3791.9875755503385,
+        "Y": 1008.7419802427177
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "6c205ebd06ce49d6bdcc38d9c8996029",
+        "Title": "Assign Workset",
+        "Nodes": [
+          "3637998bddf74b478d52690b1d17578e",
+          "623707386eb542238df4a65c04d25c29"
+        ],
+        "Left": 4858.38182864788,
+        "Top": 728.26550561204044,
+        "Width": 601.35674018673672,
+        "Height": 198.0,
+        "FontSize": 36.0,
+        "InitialTop": 781.26550561204044,
+        "InitialHeight": 172.29101539396015,
+        "TextblockHeight": 43.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": -1150.6347090560012,
+    "Y": 29.910890391130067,
+    "Zoom": 0.51643153296299638
+  }
+}
