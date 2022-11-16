@@ -1,0 +1,11 @@
+﻿System Classification,Dimensions (wxh),Insulation Type,Thickness
+Supply Air,"14""x14""",Duct Wrap,2
+Supply Air,"12""x12""",Duct Wrap,2
+Supply Air,"10""x10""",Duct Wrap,1
+Supply Air,"12""x12""-10""x10""",Duct Wrap,1
+Supply Air,"10""x10""-10""x10""-10""x10""",Duct Wrap,1
+Exhaust Air,"18""x12""",Rigid Fiber Board,1
+Exhaust Air,"12""x12""",Rigid Fiber Board,1
+Exhaust Air,"12""x18""",Rigid Fiber Board,1
+Exhaust Air,"18""x12""-18""x12""",Rigid Fiber Board,1
+Supply Air,"14""x14""-12""x14""-12""x14""",Duct Wrap,2
