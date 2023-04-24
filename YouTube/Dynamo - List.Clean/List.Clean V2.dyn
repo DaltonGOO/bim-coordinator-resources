@@ -1,0 +1,538 @@
+{
+  "Uuid": "d95d8144-654a-495b-8ebb-3183d5c24db2",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "List.Clean V2",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[[1,null,2,null,null], [null,null,3,4,null],[null,null],[null,1,null], [null,1,2,null,3,null,null,null]];",
+      "Id": "38c63b888ea447fab7f2acacf0a8b16c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a0665b79842842fe99eafda3df2c3abb",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Clean@var[]..[],bool",
+      "Id": "c53d679bdec94ad9b71c40bedcdb57d6",
+      "Inputs": [
+        {
+          "Id": "73450a832e4a4f8695b0ec759e825ad4",
+          "Name": "list",
+          "Description": "List containing nulls and empty sublists to clean\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2a2ffad4303c4eaf91e60e036cf6441e",
+          "Name": "preserveIndices",
+          "Description": "Provide an option to preserve the indices of the data\n\nbool\nDefault value : true",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "15031ed6bc2044969569b46e23b8ed3a",
+          "Name": "list",
+          "Description": "List of transposed lists",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Cleans data of nulls and empty lists from a given list of arbitrary dimension\n\nList.Clean (list: var[]..[], preserveIndices: bool = true): var[]..[]"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nl = IN[0]\r\nbool = IN[1]\r\n\r\ndef is_null(lst):\r\n    return all(el is None for el in lst)\r\n\r\n\r\ndef clean_list(input_list, preserve_indices=True):\r\n    if not input_list:\r\n        return input_list\r\n\r\n    culled_list = []\r\n\r\n    if preserve_indices:\r\n        if is_null(input_list):\r\n            return None\r\n\r\n        j = len(input_list) - 1\r\n        while j >= 0 and input_list[j] is None:\r\n            j -= 1\r\n\r\n        for i in range(j + 1):\r\n            sublist = input_list[i]\r\n\r\n            if isinstance(sublist, list):\r\n                if is_null(sublist):\r\n                    culled_list.append(None)\r\n                else:\r\n                    val = clean_list(sublist)\r\n                    if val is not None and val:\r\n                        culled_list.append(val)\r\n            else:\r\n                culled_list.append(input_list[i])\r\n\r\n    else:\r\n        if is_null(input_list):\r\n            return []\r\n\r\n        for el in input_list:\r\n            if isinstance(el, list):\r\n                if not is_null(el):\r\n                    val = clean_list(el, preserve_indices=False)\r\n                    if val:\r\n                        culled_list.append(val)\r\n            elif el is not None:\r\n                culled_list.append(el)\r\n\r\n    return culled_list\r\n\r\n\r\n\r\n\r\n\r\nOUT = clean_list(l, bool)\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "f9bb3dce97c34597a5fe5ec6bc4aa48a",
+      "Inputs": [
+        {
+          "Id": "8b024576ef0643febc13ef0a071ba485",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "900f7de04e7d4f8982eabc510b2066de",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "085c2688c5a34e4ebef0df97eeeb47ea",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": true,
+      "Id": "41def074406f4d6e97aca9505b1d2317",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "9c14917a59f14bb3ac02b094a082be19",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[[1,null,2,null,null,[],[]], [null,null,3,4,[]],[null,null],[null,1,null], [null,1,2,null,3,null,null,null]];",
+      "Id": "bb47d6836a324ea6a86aab8a87684a90",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "806983181389405a9fe291798f8c97ea",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nl = IN[0]\r\nbool = IN[1]\r\n\r\ndef is_null(lst):\r\n    return all(el is None for el in lst)\r\n\r\n\r\ndef clean_list(input_list, preserve_indices=True):\r\n    if not input_list:\r\n        return input_list\r\n\r\n    culled_list = []\r\n\r\n    if preserve_indices:\r\n        if is_null(input_list):\r\n            return None\r\n\r\n        j = len(input_list) - 1\r\n        while j >= 0 and input_list[j] is None:\r\n            j -= 1\r\n\r\n        for i in range(j + 1):\r\n            sublist = input_list[i]\r\n\r\n            if isinstance(sublist, list):\r\n                val = clean_list(sublist, preserve_indices)\r\n                culled_list.append(val)\r\n            else:\r\n                culled_list.append(input_list[i])\r\n\r\n    else:\r\n        if is_null(input_list):\r\n            return []\r\n\r\n        for el in input_list:\r\n            if isinstance(el, list):\r\n                if not is_null(el):\r\n                    val = clean_list(el, preserve_indices=False)\r\n                    if val:\r\n                        culled_list.append(val)\r\n            elif el is not None:\r\n                culled_list.append(el)\r\n\r\n    return culled_list\r\n\r\n\r\n\r\nOUT = clean_list(l, bool)\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "5bcd1fbb038e42869c1fe799b190b39c",
+      "Inputs": [
+        {
+          "Id": "53151d0e06ad4311b1c24d00d196c37b",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "139438f9fa3d40b2a81e33fbf29b4b15",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f1efdc1ea12f43399bd3b69dd9d10b75",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow my on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nl = IN[0]\r\nbool = IN[1]\r\n\r\ndef is_null(lst):\r\n    return all(el is None for el in lst)\r\n\r\n\r\ndef clean_list(input_list, preserve_indices=True):\r\n    if not input_list:\r\n        return input_list\r\n\r\n    culled_list = []\r\n\r\n    if preserve_indices:\r\n        if is_null(input_list):\r\n            return None\r\n\r\n        j = len(input_list) - 1\r\n        while j >= 0 and input_list[j] is None:\r\n            j -= 1\r\n\r\n        for i in range(j + 1):\r\n            sublist = input_list[i]\r\n\r\n            if isinstance(sublist, list):\r\n                val = clean_list(sublist, preserve_indices)\r\n                culled_list.append(val if val is not None else True)\r\n            else:\r\n                culled_list.append(False if input_list[i] is not None else True)\r\n\r\n    else:\r\n        if is_null(input_list):\r\n            return []\r\n\r\n        for el in input_list:\r\n            if isinstance(el, list):\r\n                if not is_null(el):\r\n                    val = clean_list(el, preserve_indices=False)\r\n                    if val:\r\n                        culled_list.append(val)\r\n                else:\r\n                    culled_list.append(True)\r\n            elif el is not None:\r\n                culled_list.append(False)\r\n            else:\r\n                culled_list.append(True)\r\n\r\n    return culled_list\r\n\r\n\r\n\r\n\r\n\r\nOUT = clean_list(l, bool)\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "31e5546a9f924e9b94c606f6a90f332b",
+      "Inputs": [
+        {
+          "Id": "5b39ff65d72744ec9a3cbeba544bf3e8",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "01105afef45b4ab98225c70015f1a71b",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1bb48500f4dc4617904dad62e18bc142",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Logic.RefactoredIf, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "8e71c6460daa4ed8b87aaca7c23329bc",
+      "Inputs": [
+        {
+          "Id": "f65c7ce4d2fa4f438f8d0fbf2404ae55",
+          "Name": "test",
+          "Description": "Boolean test",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d4e14e8a8ba9435c83edcf6d8330e925",
+          "Name": "true",
+          "Description": "Returned if test is true",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7aeb30407cbe4e7e96ccf47f7feabbab",
+          "Name": "false",
+          "Description": "Returned if test is false",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7155a3a278ca48d6b98a9202d11d0604",
+          "Name": "result",
+          "Description": "Result block produced",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns the result of either True or False input depending on what boolean value is toggled in the test input. Supports recursion which requires that only a single branch be executed. It's critical that that both True and False branches are isolated and do not interact with each other!"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "1;\n2;",
+      "Id": "fdd389f6de564186909df92edf528f6c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7f026a7d7a804325bf5e560b1503eda5",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "83d5ccdfa7e6409f81126cdac648053b",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "9c14917a59f14bb3ac02b094a082be19",
+      "End": "900f7de04e7d4f8982eabc510b2066de",
+      "Id": "f88c0ac8305e4082bf2ea1bc0403b7d7",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "9c14917a59f14bb3ac02b094a082be19",
+      "End": "139438f9fa3d40b2a81e33fbf29b4b15",
+      "Id": "813ca932699245d9bf6cfaa71530dee8",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "9c14917a59f14bb3ac02b094a082be19",
+      "End": "2a2ffad4303c4eaf91e60e036cf6441e",
+      "Id": "500dc568a9b546fa9ed53d4f7dea96bc",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "806983181389405a9fe291798f8c97ea",
+      "End": "8b024576ef0643febc13ef0a071ba485",
+      "Id": "4fe6a101c3a14929aa28b2ce6ec8d23d",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "806983181389405a9fe291798f8c97ea",
+      "End": "53151d0e06ad4311b1c24d00d196c37b",
+      "Id": "605ad6ad22c745668b6951f625ccc8c9",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "806983181389405a9fe291798f8c97ea",
+      "End": "5b39ff65d72744ec9a3cbeba544bf3e8",
+      "Id": "deff2e38189140559d4a859637eb8d36",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "806983181389405a9fe291798f8c97ea",
+      "End": "73450a832e4a4f8695b0ec759e825ad4",
+      "Id": "df2f093fc5994e39834a5dbb713540e9",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "1bb48500f4dc4617904dad62e18bc142",
+      "End": "f65c7ce4d2fa4f438f8d0fbf2404ae55",
+      "Id": "b2a5d69f20304f2c8f1e67099fb802fc",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "7f026a7d7a804325bf5e560b1503eda5",
+      "End": "d4e14e8a8ba9435c83edcf6d8330e925",
+      "Id": "dbff6748ed7042faae8b44ee7b59ba2a",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "83d5ccdfa7e6409f81126cdac648053b",
+      "End": "7aeb30407cbe4e7e96ccf47f7feabbab",
+      "Id": "4030f69e0e14440492da319e2d703a42",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.13",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "2.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.13.1.3887",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -29.967605590820313,
+      "EyeY": 67.4102783203125,
+      "EyeZ": 37.58709716796875,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "38c63b888ea447fab7f2acacf0a8b16c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -429.371067651639,
+        "Y": -161.47174751057202
+      },
+      {
+        "Name": "List.Clean",
+        "ShowGeometry": true,
+        "Id": "c53d679bdec94ad9b71c40bedcdb57d6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 423.019517293984,
+        "Y": -130.85449432211257
+      },
+      {
+        "Name": "Return Nulls",
+        "ShowGeometry": true,
+        "Id": "f9bb3dce97c34597a5fe5ec6bc4aa48a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1007.9754134027901,
+        "Y": -38.707890372777655
+      },
+      {
+        "Name": "Boolean",
+        "ShowGeometry": true,
+        "Id": "41def074406f4d6e97aca9505b1d2317",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 108.83072255300419,
+        "Y": 91.703997312556965
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "bb47d6836a324ea6a86aab8a87684a90",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -435.17799207560734,
+        "Y": -299.13006749124452
+      },
+      {
+        "Name": "Python List.Clean",
+        "ShowGeometry": true,
+        "Id": "5bcd1fbb038e42869c1fe799b190b39c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 721.07983022705446,
+        "Y": -134.52068762974002
+      },
+      {
+        "Name": "Return bools",
+        "ShowGeometry": true,
+        "Id": "31e5546a9f924e9b94c606f6a90f332b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1477.7372242184856,
+        "Y": -115.50118073960246
+      },
+      {
+        "Name": "If",
+        "ShowGeometry": true,
+        "Id": "8e71c6460daa4ed8b87aaca7c23329bc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2083.0439102808446,
+        "Y": 3.5256190358566073
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "fdd389f6de564186909df92edf528f6c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1814.4014445400237,
+        "Y": 140.58769945344125
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "49b611a49935455296fc69abb34e5c01",
+        "Title": "Item count isn't counting \"Empty List\"",
+        "DescriptionText": null,
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
+        "Nodes": [],
+        "HasNestedGroups": false,
+        "Left": 709.7459197939362,
+        "Top": 402.17300439492476,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 527.106584753556,
+    "Y": 407.92276411924712,
+    "Zoom": 0.69693822780875969
+  }
+}

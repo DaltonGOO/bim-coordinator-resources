@@ -1,0 +1,349 @@
+{
+  "Uuid": "ef667d60-2a5c-4900-8067-4e7c63bd9295",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Dynamo instance vars",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Point.ByCoordinates@double,double,double",
+      "Id": "4f915e2407eb416fb697831259c286be",
+      "Inputs": [
+        {
+          "Id": "3d238022ca734a72ba68ec0bc8622062",
+          "Name": "x",
+          "Description": "X coordinate\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0a0235a4930646eab5e5847afc339ee4",
+          "Name": "y",
+          "Description": "Y coordinate\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b7528bb6e3c643b1a27f83bd6cdb8b21",
+          "Name": "z",
+          "Description": "Z coordinate\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f9b3454181a84c6e974a6b8bd28d3f05",
+          "Name": "Point",
+          "Description": "Point created by coordinates",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Form a Point given 3 cartesian coordinates\n\nPoint.ByCoordinates (x: double = 0, y: double = 0, z: double = 0): Point"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow me on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\n\r\nimport sys\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\anaconda3\\\\envs\\\\Dynamo_2022\\\\Lib\")\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\OneDrive\\\\My Stuff\\\\GitHub\\\\All-Sorts-of-Dynamo-Scripts\\\\Python Module\")\r\n\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import Vector, Line\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nelements = IN[0]\r\ncolors = IN[1]\r\n\r\nOUT = []\r\nfor element, color in zip(elements, colors):\r\n    element.color = color\r\n    OUT.append(element.color)",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "aa40a315e23f46ac99fdc010f44b8a78",
+      "Inputs": [
+        {
+          "Id": "54db9ed7317943bca8f93a8c133f471d",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7a1ebf301a8e48c588f2e1dace2d8f30",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "17752314084249b99f3b52e116ee726b",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow me on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import Point\r\n\r\nclass ColoredPoint:\r\n    def __init__(self, x, y, color):\r\n        self.point = Point.ByCoordinates(x, y)\r\n        self.color = color\r\n\r\n    def coordinates(self):\r\n        return f\"({self.point.X}, {self.point.Y})\"\r\n\r\n    def colored_coordinates(self):\r\n        return f\"({self.point.X}, {self.point.Y}, color: {self.color})\"\r\n\r\ncolored_point1 = ColoredPoint(2, 3, \"red\")\r\ncolored_point2 = ColoredPoint(4, 5, \"blue\")\r\n\r\nOUT = colored_point1.coordinates(), colored_point1.colored_coordinates(), colored_point2.coordinates(), colored_point2.colored_coordinates() \r\n\r\n\r\n\r\n\"\"\"\r\nclass ColoredPoint(Point):\r\n    def __init__(self, x, y, color):\r\n        super().__init__(x, y)\r\n        self.color = color\r\n\r\n    def colored_coordinates(self):\r\n        return f\"({self.x}, {self.y}, color: {self.color})\"\r\n\"\"\"\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "413ba1c8f5694438b462838948f1551b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "067b9b3e97d24287928ca35d7b0a379f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "class Point:\r\n    def __init__(self, x, y, z):\r\n        self.x = x\r\n        self.y = y\r\n        self.z = z\r\n        \r\n    def get_coordinates(self):\r\n        return (self.x, self.y)\r\n \r\n\r\n\r\n\r\n\r\n\r\n\r\npoint1 = Point(1,2,3)\r\npoint2 = Point(4,5,6)\r\n\r\nl = [point1, point2]\r\n\r\nfor i in l:\r\n    i.coord = (0,0,0)\r\n    \r\nOUT = l[0].coord\r\n\r\n\r\n\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "481ec81e56de4042a77334f5438b222a",
+      "Inputs": [
+        {
+          "Id": "afe8a50ef63d4a0ea4f2303751fb5acd",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fb53312021484fca80934693388f4d0b",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[\"red\", \"blue\"];",
+      "Id": "4a4012de259a48efafce9a5d30260ff7",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4c013ccf0dfd4e009b53591fa09e3352",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[1, 2];\n[2, 1];",
+      "Id": "6999ef769535465ebcca6c0269673a76",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "639c21d6316443a88a66121d9dd3b05a",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9de83cb63c0242f884379c7bdee51b04",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "f9b3454181a84c6e974a6b8bd28d3f05",
+      "End": "54db9ed7317943bca8f93a8c133f471d",
+      "Id": "a8dc0b6179c94820bfa1c676efa28f3d",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "4c013ccf0dfd4e009b53591fa09e3352",
+      "End": "7a1ebf301a8e48c588f2e1dace2d8f30",
+      "Id": "5a0e9d3a7b004640914ebc22133d4be4",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "639c21d6316443a88a66121d9dd3b05a",
+      "End": "3d238022ca734a72ba68ec0bc8622062",
+      "Id": "99b8536e1d784c679e5a062028a79f6a",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "9de83cb63c0242f884379c7bdee51b04",
+      "End": "0a0235a4930646eab5e5847afc339ee4",
+      "Id": "8039a6a3381c4dcdb30d1e0a00a4823a",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.17",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "4.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.17.0.3472",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Point.ByCoordinates",
+        "ShowGeometry": true,
+        "Id": "4f915e2407eb416fb697831259c286be",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1345.687055981452,
+        "Y": 273.66318097819158
+      },
+      {
+        "Name": "Assigning Instance Vars",
+        "ShowGeometry": true,
+        "Id": "aa40a315e23f46ac99fdc010f44b8a78",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1777.2295206741073,
+        "Y": 451.89050586180167
+      },
+      {
+        "Name": "Wrapper class",
+        "ShowGeometry": true,
+        "Id": "413ba1c8f5694438b462838948f1551b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2502.5129563357355,
+        "Y": 438.49523653265373
+      },
+      {
+        "Name": "Class Vars",
+        "ShowGeometry": true,
+        "Id": "481ec81e56de4042a77334f5438b222a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 518.31183015573561,
+        "Y": 422.28845152580288
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "4a4012de259a48efafce9a5d30260ff7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1329.3953306874255,
+        "Y": 602.88489593978863
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "6999ef769535465ebcca6c0269673a76",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1108.1640063079137,
+        "Y": 261.72917118788416
+      }
+    ],
+    "Annotations": [],
+    "X": -706.887156297543,
+    "Y": 70.8700784904961,
+    "Zoom": 0.72583335096494017
+  }
+}

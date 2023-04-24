@@ -1,0 +1,443 @@
+{
+  "Uuid": "b1b6c555-67d5-4e95-976a-68965977ad5b",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "pinning sheets",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.SetPinnedStatus@bool",
+      "Id": "5d52efdb695f4c73837b19a21fef71f3",
+      "Inputs": [
+        {
+          "Id": "666d953292f042ef9fb3139ea17cda7f",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "64515ac211fa47cc83a203e753c52fb2",
+          "Name": "pinned",
+          "Description": "Value for pin status true/false\n\nbool",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2b32daa09d5844e28294597b4169192b",
+          "Name": "Element",
+          "Description": "Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Sets an existing element's pinned status\n\nElement.SetPinnedStatus (pinned: bool): Element"
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementsOfCategory, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "Id": "e6e39d1d33514c0a8e571af8042a35db",
+      "Inputs": [
+        {
+          "Id": "3aac160f6e654688a19ec12b22b31b54",
+          "Name": "Category",
+          "Description": "The Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "684b30c659ab43d2bc98d12b5077ba45",
+          "Name": "Elements",
+          "Description": "An element class.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Get all elements of the specified category from the model."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Category.ByName@string",
+      "Id": "8de1038b7bb04a98bf22dd9c82cdfb49",
+      "Inputs": [
+        {
+          "Id": "316319bc31b84c8b8fce3c3403e42397",
+          "Name": "name",
+          "Description": "The built in category name.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c97b408a2c6848e5a39ae86031ab9639",
+          "Name": "Category",
+          "Description": "Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets a Revit category by the built-in category name.\n\nCategory.ByName (name: string): Category"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Sheets\";",
+      "Id": "2f2719ec4f9d481183bd3e2bd7f8c161",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6730cae6d2104e64b0969b8f2fc0b0ce",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": false,
+      "Id": "d974d7c959734398aec002eb252845a6",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "70759d282c314f85a26888ad354388af",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Enables selection between True and False"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.IsPinned",
+      "Id": "9f3d1faaa5264f3d832d9570c072007c",
+      "Inputs": [
+        {
+          "Id": "20c75bf7559b4a4a8d1137e8c740f993",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "713c4e68c7ff4b61ae4b34d21d250b83",
+          "Name": "bool",
+          "Description": "bool",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the Element Pinned status\n\nElement.IsPinned: bool"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.FilterByBoolMask@var[]..[],var[]..[]",
+      "Id": "e59e8d1561474179b2bc225ab183a890",
+      "Inputs": [
+        {
+          "Id": "04893e5ebf3f4e1f84242d7bc65f0bff",
+          "Name": "list",
+          "Description": "List to filter.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1a3bbcd957484b1f9554f3b11b9b2cd9",
+          "Name": "mask",
+          "Description": "List of booleans representing a mask.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "696106e7acfe46c5a5f31e1375bc29e8",
+          "Name": "in",
+          "Description": "Items whose mask index is true.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "47c93f86dd504eeaa18cfef92eac2d44",
+          "Name": "out",
+          "Description": "Items whose mask index is false.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Filters a sequence by looking up corresponding indices in a separate list of booleans.\n\nList.FilterByBoolMask (list: var[]..[], mask: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "24458b9d66b3459897bf364422fa58f7",
+      "Inputs": [
+        {
+          "Id": "fa58eda6f3104e51b5a1b753f9dee679",
+          "Name": "",
+          "Description": "Node to show output from",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c27d3fa0c9564fecae0e2fcc13995446",
+          "Name": "",
+          "Description": "Node output",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualizes a node's output"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "684b30c659ab43d2bc98d12b5077ba45",
+      "End": "20c75bf7559b4a4a8d1137e8c740f993",
+      "Id": "e9a3b64b399c4bd09ff41bff1ff47338",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "684b30c659ab43d2bc98d12b5077ba45",
+      "End": "04893e5ebf3f4e1f84242d7bc65f0bff",
+      "Id": "b4d5b72000fa4b5cbbcbae097564a955",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "c97b408a2c6848e5a39ae86031ab9639",
+      "End": "3aac160f6e654688a19ec12b22b31b54",
+      "Id": "5edd778d657a46bd98af1625b8cf489a",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6730cae6d2104e64b0969b8f2fc0b0ce",
+      "End": "316319bc31b84c8b8fce3c3403e42397",
+      "Id": "9677dfcb887c4e9b8e5a4f5ce5d5d538",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "70759d282c314f85a26888ad354388af",
+      "End": "64515ac211fa47cc83a203e753c52fb2",
+      "Id": "dbc9cc4d97bb49ec9862bae91b5f277b",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "713c4e68c7ff4b61ae4b34d21d250b83",
+      "End": "1a3bbcd957484b1f9554f3b11b9b2cd9",
+      "Id": "776ac4a9f74a42bd82d6e31c10db2c31",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "696106e7acfe46c5a5f31e1375bc29e8",
+      "End": "fa58eda6f3104e51b5a1b753f9dee679",
+      "Id": "4a2f5b36434a47c38187996d7fe17da2",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "c27d3fa0c9564fecae0e2fcc13995446",
+      "End": "666d953292f042ef9fb3139ea17cda7f",
+      "Id": "4b99d61f1dfe414b84c3df0732160f96",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.13",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "2.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.17.0.3472",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Element.SetPinnedStatus",
+        "ShowGeometry": true,
+        "Id": "5d52efdb695f4c73837b19a21fef71f3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1907.4135343307703,
+        "Y": 631.76153381753841
+      },
+      {
+        "Name": "All Elements of Category",
+        "ShowGeometry": true,
+        "Id": "e6e39d1d33514c0a8e571af8042a35db",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 267.81411133135907,
+        "Y": 21.623474149390177
+      },
+      {
+        "Name": "Category.ByName",
+        "ShowGeometry": true,
+        "Id": "8de1038b7bb04a98bf22dd9c82cdfb49",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -50.0,
+        "Y": 131.0
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "2f2719ec4f9d481183bd3e2bd7f8c161",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -350.0,
+        "Y": 138.0
+      },
+      {
+        "Name": "Boolean",
+        "ShowGeometry": true,
+        "Id": "d974d7c959734398aec002eb252845a6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1412.611054178559,
+        "Y": 774.02189290125273
+      },
+      {
+        "Name": "Element.IsPinned",
+        "ShowGeometry": true,
+        "Id": "9f3d1faaa5264f3d832d9570c072007c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 608.66684187830992,
+        "Y": 292.61511122942562
+      },
+      {
+        "Name": "List.FilterByBoolMask",
+        "ShowGeometry": true,
+        "Id": "e59e8d1561474179b2bc225ab183a890",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 961.11142315338952,
+        "Y": 242.76917612793
+      },
+      {
+        "Name": "Watch",
+        "ShowGeometry": true,
+        "Id": "24458b9d66b3459897bf364422fa58f7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1351.1939629340227,
+        "Y": 318.58803597261652
+      }
+    ],
+    "Annotations": [],
+    "X": 251.04801466226104,
+    "Y": 85.688959118680089,
+    "Zoom": 0.58301301620920054
+  }
+}
