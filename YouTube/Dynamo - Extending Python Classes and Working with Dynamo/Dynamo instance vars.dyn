@@ -60,7 +60,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow me on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\n\r\nimport sys\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\anaconda3\\\\envs\\\\Dynamo_2022\\\\Lib\")\r\nsys.path.append(\"C:\\\\Users\\\\dalto\\\\OneDrive\\\\My Stuff\\\\GitHub\\\\All-Sorts-of-Dynamo-Scripts\\\\Python Module\")\r\n\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import Vector, Line\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nelements = IN[0]\r\ncolors = IN[1]\r\n\r\nOUT = []\r\nfor element, color in zip(elements, colors):\r\n    element.color = color\r\n    OUT.append(element.color)",
+      "Code": "#Preparing input from dynamo to revit\r\nelements = IN[0]\r\ncolors = IN[1]\r\n\r\nOUT = []\r\nfor element, color in zip(elements, colors):\r\n    element.color = color\r\n    OUT.append(element.color)",
       "Engine": "CPython3",
       "EngineName": "CPython3",
       "VariableInputPorts": true,
@@ -125,7 +125,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "class Point:\r\n    def __init__(self, x, y, z):\r\n        self.x = x\r\n        self.y = y\r\n        self.z = z\r\n        \r\n    def get_coordinates(self):\r\n        return (self.x, self.y)\r\n \r\n\r\n\r\n\r\n\r\n\r\n\r\npoint1 = Point(1,2,3)\r\npoint2 = Point(4,5,6)\r\n\r\nl = [point1, point2]\r\n\r\nfor i in l:\r\n    i.coord = (0,0,0)\r\n    \r\nOUT = l[0].coord\r\n\r\n\r\n\r\n",
+      "Code": "class Point:\r\n    def __init__(self, x, y, z):\r\n        self.x = x\r\n        self.y = y\r\n        self.z = z\r\n        \r\n    def get_coordinates(self):\r\n        return (self.x, self.y)\r\n \r\n\r\n\r\npoint1 = Point(1,2,3)\r\npoint2 = Point(4,5,6)\r\n\r\nl = [point1, point2]\r\n\r\nfor i in l:\r\n    i.coord = (0,0,0)\r\n    \r\nOUT = l[0].coord\r\n\r\n\r\n\r\n",
       "Engine": "CPython3",
       "EngineName": "CPython3",
       "VariableInputPorts": true,
@@ -342,8 +342,8 @@
       }
     ],
     "Annotations": [],
-    "X": -706.887156297543,
-    "Y": 70.8700784904961,
-    "Zoom": 0.72583335096494017
+    "X": 125.14356386278291,
+    "Y": 140.84243776053131,
+    "Zoom": 0.56912923741756516
   }
 }
