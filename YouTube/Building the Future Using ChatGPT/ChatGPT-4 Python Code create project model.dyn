@@ -1,0 +1,241 @@
+{
+  "Uuid": "e2a4013a-7498-4ef2-8587-604896c11e44",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "_ChatGPT-4 Python Code create project model",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference('RevitServices')\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Get the current document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Start a new transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n# Define the disciplines and their prefixes\r\ndisciplines = {\"Mechanical\": \"M\", \"Electrical\": \"E\", \"Plumbing\": \"P\"}\r\n\r\n# Retrieve all levels in the project\r\ncollector = FilteredElementCollector(doc)\r\nlevels = collector.OfClass(Level).ToElements()\r\n\r\n# Retrieve the ViewFamilyType for FloorPlan views\r\nview_family_types = FilteredElementCollector(doc).OfClass(ViewFamilyType).ToElements()\r\nfor vft in view_family_types:\r\n    if vft.ViewFamily == ViewFamily.FloorPlan:\r\n        floor_plan_view_family_type = vft\r\n        break\r\n\r\n# Create views for each discipline at each level\r\nfor level in levels:\r\n    for discipline, prefix in disciplines.items():\r\n        view_name = f\"{prefix}_{level.Name}_{discipline}\"\r\n        view_plan = ViewPlan.Create(doc, floor_plan_view_family_type.Id, level.Id)\r\n        view_plan.Name = view_name\r\n\r\n# End the transaction\r\nTransactionManager.Instance.TransactionTaskDone()\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "2e9bd2711cde479fbf147cf5496ed935",
+      "Inputs": [
+        {
+          "Id": "01820c31dc9c4a10a8b923d02a7b0329",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ce59651b93a8415cbd9e3105c15e3f06",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference('RevitServices')\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Get the current document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Start a new transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n# Define the grid line names and positions\r\nnumbered_grids = list(range(1, 11))  # This will create grids 1-10\r\nlettered_grids = list('ABCDEFGHIJ')  # This will create grids A-J\r\n\r\n# Create the numbered grids\r\nfor i, number in enumerate(numbered_grids, start=1):\r\n    line = Line.CreateBound(XYZ(i*10, 0, 0), XYZ(i*10, 100, 0))  # Adjust the coordinates as necessary\r\n    grid = Grid.Create(doc, line)\r\n    grid.Name = str(number)\r\n\r\n# Create the lettered grids\r\nfor i, letter in enumerate(lettered_grids, start=1):\r\n    line = Line.CreateBound(XYZ(0, i*10, 0), XYZ(100, i*10, 0))  # Adjust the coordinates as necessary\r\n    grid = Grid.Create(doc, line)\r\n    grid.Name = letter\r\n\r\n# End the transaction\r\nTransactionManager.Instance.TransactionTaskDone()\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "810cf52296c1415cbe8b73a77a112e6f",
+      "Inputs": [
+        {
+          "Id": "45fee2d1b2144bee9e8d58cb9a1a70eb",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c0527ee29adb4397bdd6f81e59febfd6",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference('RevitServices')\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Get the current document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Start a new transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n# Retrieve all view plans in the project\r\ncollector = FilteredElementCollector(doc)\r\nview_plans = collector.OfClass(ViewPlan).ToElements()\r\n\r\n# Retrieve the first title block in the model\r\ntitle_blocks = FilteredElementCollector(doc).OfClass(FamilySymbol).WhereElementIsElementType().ToElements()\r\ntitle_block_type = next((tb for tb in title_blocks if tb.Category.Name == 'Title Blocks'), None)\r\n\r\nif title_block_type is None:\r\n    raise Exception(\"Could not find a title block in the model.\")\r\n\r\n# Create sheets and place views\r\nfor i, view in enumerate(view_plans, start=1):\r\n    sheet_number = f\"{i:03d}\"  # Pad with zeros to a width of 3 digits\r\n    sheet = ViewSheet.Create(doc, title_block_type.Id)\r\n    sheet.SheetNumber = sheet_number\r\n    sheet.Name = view.Name\r\n\r\n    viewport = Viewport.Create(doc, sheet.Id, view.Id, XYZ.Zero)\r\n\r\n# End the transaction\r\nTransactionManager.Instance.TransactionTaskDone()\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "d5639bdec21a471da143ec96deada2a8",
+      "Inputs": [
+        {
+          "Id": "c6129bc472c842ceaf6473a7601b78b5",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f47051d404c9460fadf929bd72eaf67f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference('RevitServices')\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Get the current document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Start a new transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n# Create five levels\r\nlevel_names = [\"Level 1\", \"Level 2\", \"Level 3\", \"Level 4\", \"Level 5\"]\r\nlevel_heights = [0.0, 10.0, 20.0, 30.0, 40.0]  # Heights in feet\r\n\r\nfor name, height in zip(level_names, level_heights):\r\n    level = Level.Create(doc, height)\r\n    level.Name = name\r\n\r\n# End the transaction\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\n# Return the levels\r\nOUT = level_names\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "c7bf2749b01341d4aac031af25b2235e",
+      "Inputs": [
+        {
+          "Id": "cc585d1e2c5d4628b9e77349083475e3",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bd24f9eeed3d4e13855fadad2f7e37d1",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.17",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "4.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.17.0.3472",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Create views for mechanical, electrical, and plumbing",
+        "ShowGeometry": true,
+        "Id": "2e9bd2711cde479fbf147cf5496ed935",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1013.794278220496,
+        "Y": 409.91099011276367
+      },
+      {
+        "Name": "Generate grids",
+        "ShowGeometry": true,
+        "Id": "810cf52296c1415cbe8b73a77a112e6f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -874.29571346625687,
+        "Y": 274.3400470539251
+      },
+      {
+        "Name": "Place the new views on sheets",
+        "ShowGeometry": true,
+        "Id": "d5639bdec21a471da143ec96deada2a8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -924.89514325729772,
+        "Y": 548.98792327935837
+      },
+      {
+        "Name": "Create five levels",
+        "ShowGeometry": true,
+        "Id": "c7bf2749b01341d4aac031af25b2235e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -880.331350476895,
+        "Y": 133.80397239382745
+      }
+    ],
+    "Annotations": [],
+    "X": 1095.0977820535086,
+    "Y": 15.944993411107873,
+    "Zoom": 0.82078518495799724
+  }
+}
