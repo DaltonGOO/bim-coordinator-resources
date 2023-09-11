@@ -1,0 +1,458 @@
+{
+  "Uuid": "2952c001-fab0-4280-b2e6-9322475ec684",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "selection path",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "#The BIM Coordinators Dynamo Python Template\r\n#Subscribe to my YouTube Channel: https://www.youtube.com/c/TheBIMCoordinator/featured\r\n#Follow me on LinkedIn: https://www.linkedin.com/in/dalton-goodwin-067a07107/\r\n\r\n\"\"\"\r\nDynamo Core Assemblies: \r\nhttps://www.nuget.org/packages/DynamoVisualProgramming.Core/2.13.1.3887\r\n\r\nRevit API: \r\nhttps://www.revitapidocs.com/2020/d4648875-d41a-783b-d5f4-638df39ee413.htm\r\n\"\"\"\r\n\r\n\"\"\"\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\r\n\r\nC:\\Program Files\\Autodesk\\Revit 2022\\AddIns\\DynamoForRevit\\Revit\r\n\r\n\"\"\"\r\n\r\nimport clr\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import Selection\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n\r\nOUT = []\r\nfor id in uidoc.Selection.GetElementIds():\r\n    OUT.append(doc.GetElement(id))",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "656212c713784a00b1fab59aff5039db",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "312483ac2f8e4e16af74ef921948d18d",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1e0448f882084e1087ade92454a5cb0b",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "ade7e9a652fa44a89cf7b0f54fcf6e87",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1183ae58b211479b967abbfca6ac19cd",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\"test3\";"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom System.Collections.Generic import *\r\n\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nname = IN[1]\r\n\r\n# create itemset\r\nitems = UnwrapElement(IN[0])\r\nids = list()\r\nfor item in items:\r\n\tids.append(item.Id)\r\nitemset = List[ElementId](ids)\r\n\r\n# collect all existing filters from the model \r\nnames = list()\r\ncollector = FilteredElementCollector(doc)\r\nfilters = collector.OfClass(FilterElement).ToElements();\r\n\r\nselset = False\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n# if a filter of that name already exists, delete its content\r\nfor filter in filters:\r\n\tif filter.Name == name:\r\n\t\tfilter.Clear()\r\n\t\tselset = filter\r\n# create a new selection set if it doesn't already exist\r\nif selset == False:\r\n\tselset = SelectionFilterElement.Create(doc,name)\r\n# add the items to the selection set\r\ntry: \r\n\tselset.AddSet(itemset)\r\n\tOUT = selset.ToDSType(False)\r\nexcept: OUT = None\r\nTransactionManager.Instance.TransactionTaskDone()\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "9df831b91aec40c59091de752780e221",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "b4bd41eac819495e9508a454a9819eb1",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7f9252f3459e4708a35cca529ae42a53",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c09994beb77e4a2e8d99b0c8040c1376",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\nitems = UnwrapElement(IN[0])\r\nelementlist = list()\r\nfor item in items:\r\n\tselsetmembers = list()\r\n\tfor member in item.GetElementIds():\r\n\t\tselsetmembers.append(item.Document.GetElement(member))\r\n\telementlist.append(selsetmembers)\r\nOUT = elementlist",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "b84d7526e7624abe9eea603f8895a866",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "d3dab687161c479593c19b214c486501",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2f0238c58b834ef183634adcb6f6b258",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "25124f551d3042d3b0ca0324b2a6772c",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [
+        {
+          "Id": "03cdfbd15b46400d86d64b8421a529db",
+          "Name": "x",
+          "Description": "x",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a0877b1337e64d068c53f77245e52fb1",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "x[1];"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import FilteredElementCollector, SelectionFilterElement\r\n\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n\r\ncollector = FilteredElementCollector(doc)\r\nselection_sets = collector.OfClass(SelectionFilterElement).ToElements()\r\n\r\nselection_set_names = [sel_set.Name for sel_set in selection_sets]\r\n\r\nOUT = selection_set_names, selection_sets\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "d077f62d3d2548e0912527ec1ec16d26",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "2b1876fb7c7e40d1950eae93f32b20c4",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "4105233404334fefab85270ba57b53b2",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "Id": "cd70cc10f0b34ba2a7fe6bf7e443cd27",
+      "NodeType": "BooleanInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "83bfd6705f4f400f936566c1b64dc1db",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Enables selection between True and False",
+      "InputValue": true
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "Id": "6ec3f89d02ac427ba867474b57e560db",
+      "NodeType": "BooleanInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "039386bbb943458aaa397431bfc60843",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Enables selection between True and False",
+      "InputValue": false
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "1e0448f882084e1087ade92454a5cb0b",
+      "End": "b4bd41eac819495e9508a454a9819eb1",
+      "Id": "e9d76a88085a42e8bb6cc57851d37d18",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "1183ae58b211479b967abbfca6ac19cd",
+      "End": "7f9252f3459e4708a35cca529ae42a53",
+      "Id": "9dd0fc3ee09e48219b1e7f5fb0082efc",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "a0877b1337e64d068c53f77245e52fb1",
+      "End": "d3dab687161c479593c19b214c486501",
+      "Id": "54f7882215d947cd94eafe2d7d82406d",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "4105233404334fefab85270ba57b53b2",
+      "End": "03cdfbd15b46400d86d64b8421a529db",
+      "Id": "7a72c29d7a4d44acbc12d9f9b94104ea",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "83bfd6705f4f400f936566c1b64dc1db",
+      "End": "2b1876fb7c7e40d1950eae93f32b20c4",
+      "Id": "30c14df8448340e5937ffa8e3f04ac52",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "039386bbb943458aaa397431bfc60843",
+      "End": "312483ac2f8e4e16af74ef921948d18d",
+      "Id": "306e42e9df9e462b8c93b048acd99253",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.18",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "6.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.18.1.5096",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "656212c713784a00b1fab59aff5039db",
+        "Name": "Python Script - Returns Elements of Active Selection",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 52.770762138866417,
+        "Y": -216.02274377191998
+      },
+      {
+        "Id": "ade7e9a652fa44a89cf7b0f54fcf6e87",
+        "Name": "Code Block",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 756.51612527348993,
+        "Y": -90.359242203636541
+      },
+      {
+        "Id": "9df831b91aec40c59091de752780e221",
+        "Name": "Python Script - Create SelectionSet",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 1003.4292049536258,
+        "Y": -199.55798914792854
+      },
+      {
+        "Id": "b84d7526e7624abe9eea603f8895a866",
+        "Name": "Python Script - Returns Elements in SelectionSet",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 987.91092522680492,
+        "Y": 527.049603039695
+      },
+      {
+        "Id": "25124f551d3042d3b0ca0324b2a6772c",
+        "Name": "Code Block",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 630.22625695491342,
+        "Y": 488.48768606799945
+      },
+      {
+        "Id": "d077f62d3d2548e0912527ec1ec16d26",
+        "Name": "Python Script - Returns All Saved SelectionSets",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 54.574100450763581,
+        "Y": 462.65123686683387
+      },
+      {
+        "Id": "cd70cc10f0b34ba2a7fe6bf7e443cd27",
+        "Name": "Boolean",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -258.76555302262636,
+        "Y": 481.90668622120523
+      },
+      {
+        "Id": "6ec3f89d02ac427ba867474b57e560db",
+        "Name": "Boolean",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -184.12067769121563,
+        "Y": -217.48974043730288
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "8a41ef6c15934f988709ae7955a9db1a",
+        "Title": "Clockwork",
+        "DescriptionText": null,
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
+        "Nodes": [],
+        "HasNestedGroups": false,
+        "Left": 1013.5957427123745,
+        "Top": -235.52714476394408,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "GroupStyleId": "00000000-0000-0000-0000-000000000000",
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "df774934e5cf449488f1d27d3060b78e",
+        "Title": "Clockwork",
+        "DescriptionText": null,
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
+        "Nodes": [],
+        "HasNestedGroups": false,
+        "Left": 1003.8135358982263,
+        "Top": 495.45453319435478,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "GroupStyleId": "00000000-0000-0000-0000-000000000000",
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 352.31898583760835,
+    "Y": 530.81193396696426,
+    "Zoom": 0.636161091107726
+  }
+}
