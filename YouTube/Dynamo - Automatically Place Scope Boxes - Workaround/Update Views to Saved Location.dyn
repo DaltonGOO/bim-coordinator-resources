@@ -1,0 +1,393 @@
+{
+  "Uuid": "c60e2e43-ac1f-4c35-bca1-7fdef28ce8c4",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "Update Views to Saved Location",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [
+    {
+      "Id": "a8bcf4cc4bc3430184bdd32679b3e28e",
+      "Name": "Save Current Location?",
+      "Type": "boolean",
+      "Type2": "boolean",
+      "Value": "false",
+      "Description": "Enables selection between True and False",
+      "SelectedIndex": 0
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import os\r\nfrom Autodesk.Revit.DB import XYZ, Transaction\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Get the current document from the Document Manager\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Get the list of viewpoints from the input\r\nviewports = UnwrapElement(IN[0])\r\nbool = IN[1]\r\n\r\n# Define the file path based on the Revit model's location or the user's home directory\r\nmodel_path = doc.PathName\r\n\r\nif bool:\r\n    file_path = os.path.join(os.path.dirname(model_path), \"viewport_location.txt\")\r\n    \r\n    # Open the file in write mode and write the viewpoints\r\n    with open(file_path, 'w') as file:\r\n        for viewport in viewports:\r\n            viewpoint_id = viewport.Id\r\n            point_location = viewport.GetBoxCenter()\r\n            file.write(\"Viewport ID: {}, Location: ({}, {}, {})\\n\".format(\r\n                viewpoint_id,\r\n                point_location.X,\r\n                point_location.Y,\r\n                point_location.Z))\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "be19ca3a80e2464f870e62439929acbf",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "057a7f19d42e4f539e98f1c20b3bb04c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "130a05ad32e84adeb01b3e5df6eb8cad",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "4d02da7cf89043b5bfb0b9c803b72f8b",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementsOfCategory, DSRevitNodesUI",
+      "Id": "e641327cf55f4111a9e1539e669f8425",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "adf9e081a1e04aab83c47639d41ce07f",
+          "Name": "Category",
+          "Description": "The Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "dfcf7ca179574f56aebbf9730178896d",
+          "Name": "Elements",
+          "Description": "An element type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Get all elements of the specified category from the model."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "Id": "580f06c68be9438fb1a1e53893ddf875",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "4ba30120b2324cda8e8d194ecc314414",
+          "Name": "name",
+          "Description": "The built in category name.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "23304a6092814823898e7603f495b582",
+          "Name": "Category",
+          "Description": "Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "FunctionSignature": "Revit.Elements.Category.ByName@string",
+      "Replication": "Auto",
+      "Description": "Gets a Revit category by the built-in category name.\n\nCategory.ByName (name: string): Category"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "00f79beed4714f008ad6dd01fee38e44",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "95acf9576e954e9da86706c5192fcda9",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\"Viewports\";"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "\"\"\"\r\n1. Create and name a new schema\r\n2. Set the read/write access for the schema\r\n3. Define one or more fields of data for the schema\r\n4. Create an entity based on the schema\r\n5. Assign values to the fields for the entity\r\n6. Associate the entity with a Revit element\r\n\"\"\"\r\n#import sys\r\nimport sys\r\nimport os\r\nimport uuid\r\nimport clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n#import dynamo libaries for creating a point\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import Point\r\n\r\nimport clr\r\nclr.AddReference('System')\r\nfrom System import Guid, Int32\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n\r\nin_elements = UnwrapElement(IN[0])\r\n\r\nelements = []\r\n\r\nfor index,p in enumerate(in_elements):\r\n    if p.LookupParameter(\"Scope Box\"):\r\n        if p.LookupParameter(\"Scope Box\").AsElementId().ToString() != \"-1\":\r\n            elements.append(in_elements[index])\r\n\r\nOUT = elements\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "f4dfc628d0bc4d178169d815c9c762af",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "30ba4f26d4db400aa652a10a30952697",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "49838bbd78884b1bb4af14b686ecb167",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import re\r\nimport os\r\nimport clr\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n\r\nfrom Autodesk.Revit.DB import XYZ, Transaction, Viewport\r\nfrom Autodesk.Revit.DB import ElementId as RevitElementId\r\n\r\nbool = IN[0]\r\nOUT = []\r\nif not bool:\r\n\r\n    # Define the file path based on the Revit model's location or the user's home directory\r\n    model_path = doc.PathName\r\n    file_path = os.path.join(os.path.dirname(model_path), \"viewport_location.txt\")\r\n\r\n# Open the file in read mode\r\n    with open(file_path, 'r') as file:\r\n        # Read all lines from the file\r\n        lines = file.readlines()\r\n    \r\n    \r\n    \r\n        # Loop through the lines\r\n        for line in lines:\r\n            # Parse the viewpoint ID and location from the line\r\n            parts = line.split(\", \")\r\n            viewport_id = int(parts[0].split(\": \")[1])\r\n            location_parts = parts[1].split(\": \")[1].strip(\"()\\n\").split(\", \")\r\n            location_parts = re.findall(r\"[-+]?\\d*\\.\\d+|\\d+\", line)\r\n            location_parts = location_parts[1:4]\r\n            location = XYZ(float(location_parts[0]), float(location_parts[1]), float(location_parts[2]))\r\n            \r\n            TransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\t\t\t\r\n            # Get the viewpoint element\r\n            viewport = doc.GetElement(RevitElementId(viewport_id))\r\n    \r\n            # Get the sheet and view from the viewpoint\r\n            sheet = doc.GetElement(viewport.SheetId)\r\n            view = doc.GetElement(viewport.ViewId)\r\n    \r\n            # Delete the old viewpoint\r\n            doc.Delete(viewport.Id)\r\n    \r\n            # Create a new viewport at the same location\r\n            new_viewport = Viewport.Create(doc, sheet.Id, view.Id, location)\r\n    \r\n            # Add the new viewport to the output\r\n            OUT.append(new_viewport)\r\n            TransactionManager.Instance.TransactionTaskDone()\r\n\r\n\r\n\r\n  \r\n  \r\n\r\n",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "802e008b1c404a05882efbbc4087f5dc",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "07c273f44c3747e8b6f30977d4b67a43",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ab362a5a6a3749a88ca510a6a3d3ce17",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "Id": "a8bcf4cc4bc3430184bdd32679b3e28e",
+      "NodeType": "BooleanInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "37920dd738e84aa88f687df327ed20c2",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Enables selection between True and False",
+      "InputValue": false
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "dfcf7ca179574f56aebbf9730178896d",
+      "End": "30ba4f26d4db400aa652a10a30952697",
+      "Id": "9ea2bb1b9cef4e6d8dbb827e6b465730",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "23304a6092814823898e7603f495b582",
+      "End": "adf9e081a1e04aab83c47639d41ce07f",
+      "Id": "325ae7524ca04ec98514698d746ca0be",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "95acf9576e954e9da86706c5192fcda9",
+      "End": "4ba30120b2324cda8e8d194ecc314414",
+      "Id": "862d4abe3ed64a68aa2aefb679ffda8b",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "49838bbd78884b1bb4af14b686ecb167",
+      "End": "057a7f19d42e4f539e98f1c20b3bb04c",
+      "Id": "8892d137088748e592ae252fc6d09ced",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "37920dd738e84aa88f687df327ed20c2",
+      "End": "07c273f44c3747e8b6f30977d4b67a43",
+      "Id": "3d04d6ee0d344928bf2a852944e69d3a",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "37920dd738e84aa88f687df327ed20c2",
+      "End": "130a05ad32e84adeb01b3e5df6eb8cad",
+      "Id": "5d0bc3cc39c5443895c2a551ad593dc1",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "1.10",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.19.3.6394",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": 0.5348593140383191,
+      "EyeY": 29.504139522769457,
+      "EyeZ": 2.709440127817961,
+      "LookX": -0.10819925315575074,
+      "LookY": -29.504139522769457,
+      "LookZ": -3.4227279581707442,
+      "UpX": -0.029874803353418865,
+      "UpY": 0.32556815445715742,
+      "UpZ": -0.94504649246899675
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "be19ca3a80e2464f870e62439929acbf",
+        "Name": "Save View Location",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 670.020960963971,
+        "Y": -475.49741459986365
+      },
+      {
+        "Id": "e641327cf55f4111a9e1539e669f8425",
+        "Name": "All Elements of Category",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -568.86751117110987,
+        "Y": -298.18835689354307
+      },
+      {
+        "Id": "580f06c68be9438fb1a1e53893ddf875",
+        "Name": "Category.ByName",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -828.58829397297052,
+        "Y": -292.12446157713117
+      },
+      {
+        "Id": "00f79beed4714f008ad6dd01fee38e44",
+        "Name": "Code Block",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -1051.3150513734854,
+        "Y": -280.31722984461283
+      },
+      {
+        "Id": "f4dfc628d0bc4d178169d815c9c762af",
+        "Name": "Grab views that have scope boxes",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 18.368598110897096,
+        "Y": -357.90062102805581
+      },
+      {
+        "Id": "802e008b1c404a05882efbbc4087f5dc",
+        "Name": "Update View",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 652.99842657440217,
+        "Y": -860.6588539898471
+      },
+      {
+        "Id": "a8bcf4cc4bc3430184bdd32679b3e28e",
+        "Name": "Save Current Location?",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -1264.8472101249895,
+        "Y": -719.45514903290348
+      }
+    ],
+    "Annotations": [],
+    "X": 811.34781202787281,
+    "Y": 671.92075682644872,
+    "Zoom": 0.56448262012329087
+  }
+}
